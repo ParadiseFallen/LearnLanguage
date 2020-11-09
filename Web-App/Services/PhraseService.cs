@@ -9,23 +9,44 @@ using Web.Models;
 
 namespace Web.Services
 {
-    public class PhraseService
+    public class PhraseService : DBService
     {
-        public DatabaseContext DB { get; set; }
-        public PhraseService(DatabaseContext db)
+        //public async Task<IEnumerable<Phrase>> GetRandomPhrases(CultureInfo culture, int count)
+        //{
+        //    var random = new Random();
+        //    var filteredPhrases =
+        //    DB.Phrases
+        //        .Where(p => p.Culture == culture)
+        //        .OrderBy(r => random.Next()); //shuffle
+        //    var countToTake = count < filteredPhrases.Count() ? count : filteredPhrases.Count();
+        //    return filteredPhrases.Take(countToTake);
+        //}
+        public PhraseService(DatabaseContext db) : base(db)
         {
-            DB = db;
         }
 
-        public async Task<IEnumerable<Phrase>> GetRandomPhrases(CultureInfo culture, int count)
+        public async Task<bool> CreatePhraseAsync(Phrase phrase)
         {
-            var random = new Random();
-            var filteredPhrases =
-            DB.Phrases
-                .Where(p => p.Culture == culture)
-                .OrderBy(r => random.Next()); //shuffle
-            var countToTake = count < filteredPhrases.Count() ? count : filteredPhrases.Count();
-            return filteredPhrases.Take(countToTake);
+            if (Database.Phrases.Where(p => p.Text == phrase.Text).Count()!=0)
+                return false;
+            Database.Add(phrase);
+            await Database.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> DeletePhraseAsync(int id)
+        {
+            var phrase = Database.Phrases.Where(p => p.Id == id).FirstOrDefault();
+            if (phrase == default)
+                return false;
+            Database.Remove(phrase);
+            await Database.SaveChangesAsync();
+            return true;
+        }
+        public async Task<Phrase> UpdatePhraseAsync(Phrase phrase) 
+        {
+            phrase = Database.Update(phrase).Entity;
+            await Database.SaveChangesAsync();
+            return phrase;
         }
     }
 }

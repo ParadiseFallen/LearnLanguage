@@ -20,25 +20,20 @@ namespace Web.Models
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
             //var a = Phrases.Add(new Phrase() { Culture = new CultureInfo("en-EN"), Text = "fgbwahneuyignaweiujgouaw dfaw " });
             //var b = Phrases.Add(new Phrase() { Culture = new CultureInfo("ru-RU"), Text = "как так вышло " });
             //Translations.Add(new Translation() { A = a.Entity, B = b.Entity });
-            this.SaveChanges();
+            SaveChanges();
         }
-        public Phrase GetRandomPhrase(CultureInfo cultureInfo) => 
-            Phrases
-                .Where(p=>p.Culture==cultureInfo)
-                .Skip(new Random().Next(0, Phrases.Count(p=>p.Culture == cultureInfo)))
-                .Take(1)
-                .FirstOrDefault();
-        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .Entity<Phrase>()
                 .Property(e => e.Culture)
                 .HasConversion(ci=>ci.Name,ci=>new CultureInfo(ci));
+
             base.OnModelCreating(modelBuilder);
         }
     }

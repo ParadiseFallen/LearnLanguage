@@ -7,9 +7,16 @@
         xmlns:v="clr-namespace:Client.Views;assembly=Client"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Client.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="Client">
-
+        Icon="/Assets/logo.jpg"
+        Title="Client"
+		MinWidth="1000"
+		MinHeight="600"
+		>
+	<Window.Styles>
+		<StyleInclude Source="/Styles/DefaultTheme.axaml" />
+		<StyleInclude Source="/Styles/DebugStyle.axaml" />
+	</Window.Styles>
+	
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>

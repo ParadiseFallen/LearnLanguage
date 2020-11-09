@@ -12,7 +12,7 @@ namespace Client.ViewModels
         public MainWindowViewModel()
         {
             Router = new RoutingState();
-            this.Router.Navigate.Execute(new LoginViewModel(this));
+            this.Router.Navigate.Execute(new AuthViewModel(this));
         }
         
     }

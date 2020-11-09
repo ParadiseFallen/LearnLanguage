@@ -5,9 +5,9 @@ using ReactiveUI;
 
 namespace Client.Views
 {
-    public class LoginView : ReactiveUserControl<LoginViewModel>
+    public class AuthView : ReactiveUserControl<AuthViewModel>
     {
-        public LoginView()
+        public AuthView()
         {
             AvaloniaXamlLoader.Load(this);
             this.WhenActivated(disposables => { });

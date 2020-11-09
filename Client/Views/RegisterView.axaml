@@ -1,0 +1,29 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Client.ViewModels;assembly=Client"
+             xmlns:v="clr-namespace:Client.Views;assembly=Client"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Client.Views.RegisterView">
+	<Design.DataContext>
+		<vm:RegisterViewModel/>
+	</Design.DataContext>
+
+	<DockPanel>
+		<Button Classes="buttonAsLink" Content="&#8592; Go back" Command="{Binding GoBack}" DockPanel.Dock="Top" HorizontalAlignment="Left"/>
+
+		<Panel HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Top">
+			<StackPanel>
+				<TextBlock Text="New User" HorizontalAlignment="Center" Margin="50" FontSize="50"/>
+				<TextBlock Text="{Binding Errors}"/>
+				<TextBox FontSize="20" Classes="roundInput" Text="{Binding Username}" Watermark="Username" Background="#e6e6e6" Foreground="#666666"/>
+				<TextBox FontSize="20" Classes="roundInput" Text="{Binding Password}" Watermark="Password" PasswordChar="*" Background="#e6e6e6" Foreground="#666666"/>
+				<Button  Content="Register" Command="{Binding Register}"/>
+			</StackPanel>
+		</Panel>
+
+	</DockPanel>
+	
+	
+</UserControl>

@@ -41,22 +41,46 @@ namespace Web
                 options.EnableSensitiveDataLogging(true);
             });
 
-            services.AddAuthorizationCore(opt=> { });
-            services.AddAuthenticationCore(opt => {
-                
-            });
+            services.AddAuthorizationCore(options => { });
+            services.AddAuthenticationCore(options => { });
             services.AddIdentity<User, IdentityRole>(options =>
-            { 
-
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.User.RequireUniqueEmail = true;
+                // opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
+                //options.User.AllowedUserNameCharacters = new Func<string>(() =>
+                //{
+                //    var sb = new System.Text.StringBuilder();
+                //    for (ushort i = 65; i < 122; i++)
+                //    {
+                //        if (i < 91 || i > 96)
+                //        {
+                //            sb.Append((char)i);
+                //        }
+                //    }
+                //    return sb.ToString();
+                //})();
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(10);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
             })
                 .AddEntityFrameworkStores<DatabaseContext>();
-            services.AddHttpClient("Http");
 
-            services.AddRazorPages().AddJsonOptions(opt=>opt.AddAllConverters());
             services.AddServerSideBlazor();
+            services.AddRazorPages().AddJsonOptions(opt=>opt.AddAllConverters());
+
+            #region register services
             services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<TTSService>();
+
+            services.AddScoped<TTSService>();
+            services.AddScoped<TranslationService>();
+            services.AddScoped<AccountService>();
             services.AddScoped<PhraseService>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

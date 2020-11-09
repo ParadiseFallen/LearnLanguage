@@ -7,7 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "SharedModels\Mode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web-App\Web.csproj", "{9EFC33B0-5D70-453F-9BA3-3FB9B85E93EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{1D1456DA-C23E-4DDC-A584-68B485186F71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{1D1456DA-C23E-4DDC-A584-68B485186F71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{37E1F342-88AF-4698-86E0-4BCD42D37FE5}"
+	ProjectSection(SolutionItems) = preProject
+		ClearData.sql = ClearData.sql
+		DebugCommands.sql = DebugCommands.sql
+		SeedData.sql = SeedData.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

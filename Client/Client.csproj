@@ -8,10 +8,19 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaXaml Remove="Styles\DebugStyle.axaml" />
+    <AvaloniaXaml Remove="Styles\DefaultTheme.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Styles\DebugStyle.axaml" />
+    <AvaloniaResource Include="Styles\DefaultTheme.axaml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.12" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.12" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.12" />
     <PackageReference Include="ReactiveUI.Fody" Version="12.1.5" />
+    <PackageReference Include="ReactiveUI.Validation" Version="1.8.6" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharedModels\Models.csproj" />

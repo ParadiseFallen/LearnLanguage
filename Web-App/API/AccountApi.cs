@@ -18,24 +18,18 @@ namespace Web.API
     [Route("/api/account")]
     public class AccountApi : Controller
     {
-        private SignInManager<User> signinManager;
-        private UserManager<User> userManager;
-        public AccountApi(SignInManager<User> manager, UserManager<User> userManager)
+        private AccountService Service { get; }
+        public AccountApi(AccountService service)
         {
-            signinManager = manager;
-            this.userManager = userManager;
+            Service = service;
         }
 
         [HttpPost("login")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] Login data)
         {
-            Microsoft.AspNetCore.Identity.SignInResult result
-            = await signinManager.PasswordSignInAsync(data.Username,
-            data.Password, false, false);
-            if (result.Succeeded)
+            if (await Service.LoginAsync(data))
                 return Ok();
-
             return Unauthorized("Wrong login or password");
         }
 
@@ -43,19 +37,20 @@ namespace Web.API
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromBody] Login data)
         {
-            var createdUser = await userManager.CreateAsync(new User() {UserName = data.Username }, data.Password);
-            if (createdUser.Succeeded)
+            var errors = await Service.RegisterAsync(data);
+            if (errors == null)
             {
                 return Ok();
             }
-            return Conflict(createdUser.Errors);
+            return Conflict(errors);
         }
 
+        [Authorize(AuthenticationSchemes = "Identity.Application")]
         [HttpPost("logout")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await signinManager.SignOutAsync();
+            await Service.LogoutAsync();
             return Ok();
         }
     }
