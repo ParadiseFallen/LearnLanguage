@@ -13,9 +13,16 @@ namespace Models.Services.API
 {
     public class AccountAPIService : APIServiceBase
     {
-        public AccountAPIService(HttpApiClient httpApiClient, JsonSerializerOptions serializerOptions)
+        public AccountAPIService(string authCookieName,HttpApiClient httpApiClient, JsonSerializerOptions serializerOptions)
             : base(httpApiClient, serializerOptions)
         {
+            AuthCookieName = authCookieName;
+        }
+        public string AuthCookieName { get; }
+        public string AuthCookie 
+        { 
+            get => Http.Cookies.GetCookies(Http.Client.BaseAddress)[AuthCookieName].Value;
+            set => Http.Cookies.Add(new System.Net.Cookie(AuthCookieName, value,"/", Http.Client.BaseAddress.Host));
         }
 
         public async Task<string> Login(Login login)
@@ -23,7 +30,7 @@ namespace Models.Services.API
             try
             {
                 var response = await Http.Client.PostAsJsonAsync(APIEndpoints.LoginAccountEndpoint, login);
-                return response.IsSuccessStatusCode?"Succses":"Wrong login or password";
+                return response.IsSuccessStatusCode?"":"Wrong login or password";
             }
             catch (Exception)
             {
@@ -36,7 +43,7 @@ namespace Models.Services.API
             try
             {
                 await Http.Client.PostAsJsonAsync(APIEndpoints.LogoutAccountEndpoint, SerializerOptions);
-                return "Succses";
+                return "";
             }
             catch (Exception ex)
             {
@@ -59,5 +66,6 @@ namespace Models.Services.API
                 return "Server not responding";
             }
         }
+
     }
 }

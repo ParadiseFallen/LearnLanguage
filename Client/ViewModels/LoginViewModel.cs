@@ -14,6 +14,9 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reactive.Linq;
+using System.Diagnostics;
+using System.Configuration;
+using Client.Services;
 
 namespace Client.ViewModels
 {
@@ -54,6 +57,12 @@ namespace Client.ViewModels
             #region Base init
             HostScreen = Host;
             Account = Locator.Current.GetService<AccountAPIService>();
+            var prefs = PreferenceService.GetOrCreate();
+            if (prefs!= default)
+            {
+                Username = Username = prefs.Username;
+            }
+           
             #endregion
 
             #region Validation
@@ -80,8 +89,17 @@ namespace Client.ViewModels
             },
             canExecute: this.IsValid());
 
-            Login.Subscribe(x => Status = x);
+            Login.Subscribe(x => 
+            {
+                Status = x;
+                if (RememberMe)
+                {
+                    prefs.Username = Username;
+                    PreferenceService.SaveLocalStore(prefs);
+                }
+            });
 
+            //Account.AuthCookie = "test";
 
             Register = ReactiveCommand.Create(
                 () => HostScreen.Router.Navigate.Execute(new RegisterViewModel(HostScreen) { Username = Username }),

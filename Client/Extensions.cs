@@ -29,9 +29,8 @@ namespace Client
 
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
-
             Locator.CurrentMutable.RegisterConstant(http, typeof(HttpApiClient));
-            Locator.CurrentMutable.Register(()=> new AccountAPIService(http, serializerOption), typeof(AccountAPIService));
+            Locator.CurrentMutable.Register(()=> new AccountAPIService(".AspNetCore.Identity.Application", http, serializerOption), typeof(AccountAPIService));
             Locator.CurrentMutable.Register(() => new TranslateAPIService(http, serializerOption), typeof(TranslateAPIService));
 
             return builder;
