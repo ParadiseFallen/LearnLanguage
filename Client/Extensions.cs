@@ -24,12 +24,13 @@ namespace Client
         {
             var http = new HttpApiClient(new Uri("https://localhost:44312"));
             var serializerOption = new JsonSerializerOptions();
+
             JsonExtension.GetAllConverters().ToList().ForEach(serializerOption.Converters.Add);
 
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
-            Locator.CurrentMutable.RegisterConstant(http, typeof(HttpApiClient));
 
+            Locator.CurrentMutable.RegisterConstant(http, typeof(HttpApiClient));
             Locator.CurrentMutable.Register(()=> new AccountAPIService(http, serializerOption), typeof(AccountAPIService));
             Locator.CurrentMutable.Register(() => new TranslateAPIService(http, serializerOption), typeof(TranslateAPIService));
 

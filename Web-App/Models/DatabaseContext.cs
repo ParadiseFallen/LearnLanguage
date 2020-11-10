@@ -29,12 +29,16 @@ namespace Web.Models
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder
                 .Entity<Phrase>()
                 .Property(e => e.Culture)
                 .HasConversion(ci=>ci.Name,ci=>new CultureInfo(ci));
-
-            base.OnModelCreating(modelBuilder);
+            modelBuilder
+                .Entity<User>()
+                .Property(e => e.NativeLanguage)
+                .HasConversion(ci => ci.Name, ci => new CultureInfo(ci));
         }
     }
 }

@@ -11,17 +11,14 @@
              x:Class="Client.Views.AuthView"
 			 Classes="authGradient"
 			 >
-	<UserControl.Styles>
-		<StyleInclude Source="/Styles/DefaultTheme.axaml"/>
-	</UserControl.Styles>
 
 	<Design.DataContext>
 		<vm:AuthViewModel/>
 	</Design.DataContext>
-	
+
 	<Border Margin="200,100" Classes="roundBorder">
 		<Grid Background="White">
-			
+
 			<ContentPresenter CornerRadius="50"/>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="5*"/>
@@ -33,11 +30,9 @@
 			</Grid>
 			<!--switcher-->
 			<Grid Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-				<rx:RoutedViewHost Router="{Binding Router}">
+				<rx:RoutedViewHost Router="{Binding Router}" Classes="testTransition">
 					<rx:RoutedViewHost.DefaultContent>
-						<TextBlock Text="Default content"
-								   HorizontalAlignment="Center"
-								   VerticalAlignment="Center" />
+						<Panel/>
 					</rx:RoutedViewHost.DefaultContent>
 				</rx:RoutedViewHost>
 			</Grid>

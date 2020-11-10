@@ -8,10 +8,12 @@ using ReactiveUI.Validation.Helpers;
 using SharedModels.Models;
 using Splat;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reactive.Linq;
 
 namespace Client.ViewModels
 {
@@ -29,11 +31,13 @@ namespace Client.ViewModels
         [Reactive]
         public string Password { get; set; }
         [Reactive]
-        public string Status { get; set; } = "Undefined";
+        public string Status { get; set; }
+        [Reactive]
+        public bool RememberMe { get; set; }
         #endregion
 
         #region Commands
-        public IReactiveCommand Login { get; private set; }
+        public ReactiveCommand<Unit,string> Login { get; private set; }
         public IReactiveCommand Register { get; private set; }
 
         #endregion
@@ -55,40 +59,33 @@ namespace Client.ViewModels
             #region Validation
             UsernameHelper = this.ValidationRule(
             vm => vm.Username,
-            name => 
-            {
-                if (name == null)
-                    return false;
-                return name.Trim() == "";
-            },
+            name => name is null || name.Trim().Length > 0,
             "Username shouldn't be empty.");
 
             PasswordHelper = this.ValidationRule(
             vm => vm.Password,
-            p => 
-            {
-                if (p == null)
-                    return false;
-                return p.Trim() == "";
-            },
+             p => p is null || p.Trim().Length > 0,
             "Password shouldn't be empty.");
-            PasswordHelper.DelayChangeNotifications().Dispose();
             #endregion
 
             #region Commands
-            Login = ReactiveCommand.CreateFromTask(
-            async () =>
+            Login = ReactiveCommand.CreateFromTask<Unit,string>(
+            async _ =>
             {
-                //Status = (await AccountManager.Login(new Login() 
-                //{
-                //    Username = this.Username,
-                //    Password = this.Password 
-                //})).ToString();
-                await Task.Delay(5000);
+                return await Account.Login(new Login()
+                {
+                    Username = this.Username,
+                    Password = this.Password
+                });
             },
             canExecute: this.IsValid());
-            
-            Register = ReactiveCommand.Create(() => HostScreen.Router.Navigate.Execute(new RegisterViewModel(HostScreen)));
+
+            Login.Subscribe(x => Status = x);
+
+
+            Register = ReactiveCommand.Create(
+                () => HostScreen.Router.Navigate.Execute(new RegisterViewModel(HostScreen) { Username = Username }),
+                canExecute: Login.IsExecuting.Select(x=>!x));
             #endregion
         }
         #endregion

@@ -12,12 +12,15 @@ using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Client.ViewModels
 {
     public class RegisterViewModel : ReactiveValidationObject, IRoutableViewModel
     {
+        private const string EmailRegex = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
+        
         #region IRoutableViewModel
         public string UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
         public IScreen HostScreen { get; }
@@ -28,6 +31,10 @@ namespace Client.ViewModels
         public string Username { get; set; }
         [Reactive]
         public string Password { get; set; }
+        [Reactive]
+        public string RepeatPassword { get; set; }
+        [Reactive]
+        public string Email { get; set; }
         [Reactive]
         public string Errors { get; set; }
         private AccountAPIService Account { get; }
@@ -42,6 +49,8 @@ namespace Client.ViewModels
         #region IValidatableViewModel
         public ValidationHelper UsernameHelper { get; }
         public ValidationHelper PasswordHelper { get; }
+        public ValidationHelper RepeatPasswordHelper { get; }
+        public ValidationHelper EmailHelper { get; }
         #endregion
 
         #region Ctors
@@ -51,33 +60,48 @@ namespace Client.ViewModels
             HostScreen = hostScreen;
             Account = Locator.Current.GetService<AccountAPIService>();
             #region Validation
+
             UsernameHelper = this.ValidationRule(
             vm => vm.Username,
-            name => !string.IsNullOrEmpty(name),
+            name => name is null || name.Trim().Length > 0,
             "Username shouldn't be empty.");
 
             PasswordHelper = this.ValidationRule(
             vm => vm.Password,
-            p => !string.IsNullOrEmpty(p),
+             p => p is null || p.Trim().Length > 0,
             "Password shouldn't be empty.");
+
+            RepeatPasswordHelper = this.ValidationRule(
+            vm => vm.RepeatPassword,
+             p => p is null || p==this.Password,
+            "Password must match.");
+
+            EmailHelper = this.ValidationRule(
+            vm => vm.Email,
+             p => p is null || Regex.IsMatch(p,
+             EmailRegex,
+             RegexOptions.IgnoreCase),
+            "This is not Email.");
             #endregion
 
             Register = ReactiveCommand.CreateFromTask(
-                async unit=>
+                async () =>
                 {
                     var result = await Account.Register(new Login()
                     {
                         Username = Username,
-                        Password = Password
+                        Password = Password,
+                        Email = Email,
+                        Culture = new System.Globalization.CultureInfo("en-EN")
                     });
                     if (string.IsNullOrEmpty(result)) //succses
-                        await hostScreen.Router.NavigateBack.Execute();
+                        await hostScreen.Router.NavigateAndReset.Execute(new LoginViewModel(HostScreen) {Username = Username });
                     else
                         Errors = result;
                 },
                 canExecute: this.IsValid());
 
-            GoBack = ReactiveCommand.CreateFromTask(async ()=> { await hostScreen.Router.NavigateBack.Execute(); },Register.IsExecuting.Select(x=>!x));
+            GoBack = ReactiveCommand.CreateFromTask(async () => { await hostScreen.Router.NavigateBack.Execute(); }, Register.IsExecuting.Select(x => !x));
         }
         #endregion
     }

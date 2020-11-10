@@ -12,6 +12,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace Web.API
 {
@@ -37,12 +38,10 @@ namespace Web.API
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromBody] Login data)
         {
-            var errors = await Service.RegisterAsync(data);
-            if (errors == null)
-            {
-                return Ok();
-            }
-            return Conflict(errors);
+            var errorList = await Service.RegisterAsync(data);
+            if (errorList != null)
+                return Conflict(errorList.Select(x => x.Description));
+            return Ok();
         }
 
         [Authorize(AuthenticationSchemes = "Identity.Application")]

@@ -12,10 +12,6 @@
 		MinWidth="1000"
 		MinHeight="600"
 		>
-	<Window.Styles>
-		<StyleInclude Source="/Styles/DefaultTheme.axaml" />
-		<StyleInclude Source="/Styles/DebugStyle.axaml" />
-	</Window.Styles>
 	
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>

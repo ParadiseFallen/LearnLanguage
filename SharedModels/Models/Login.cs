@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -9,8 +10,6 @@ namespace SharedModels.Models
 {
     public class Login
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         [JsonPropertyName("username")]
         [Index(IsUnique =true)]
@@ -18,5 +17,11 @@ namespace SharedModels.Models
         [Required]
         [JsonPropertyName("password")]
         public string Password { get; set; }
+        [Required]
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
+        [Required]
+        [JsonPropertyName("culture")]
+        public CultureInfo Culture { get; set; }
     }
 }

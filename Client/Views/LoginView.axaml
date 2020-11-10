@@ -14,11 +14,12 @@
 		<Panel HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Top">
 			<StackPanel>
 				<TextBlock Text="User Login" HorizontalAlignment="Center" Margin="50" FontSize="50"/>
-				<TextBlock Text="{Binding Status}"/>
+				<TextBlock Text="{Binding Status}" HorizontalAlignment="Center" Foreground="Red"/>
 				<TextBox FontSize="20" Classes="roundInput" Text="{Binding Username}" Watermark="Username" IsEnabled="{Binding !Login.IsExecuting^}" Background="#e6e6e6" Foreground="#666666"/>
 				<TextBox FontSize="20" Classes="roundInput" Text="{Binding Password}" Watermark="Password" PasswordChar="&#8226;" IsEnabled="{Binding !Login.IsExecuting^}" Background="#e6e6e6" Foreground="#666666"/>
+				<CheckBox Content="Remember me" Margin="15,0" FontSize="20" IsChecked="{Binding RememberMe}" IsEnabled="{Binding !Login.IsExecuting^}"/>
 				<Button Classes="loginButton" Content="Login" Command="{Binding Login}"/>
-				<Button  Content="Forget a password?" Command="{Binding Login}"/>
+				<Button Classes="buttonAsLink" Content="Forget a password?" Command="{Binding Login}"/>
 			</StackPanel>
 		</Panel>
 		

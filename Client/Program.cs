@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
-using Avalonia.Logging.Serilog;
+//using Avalonia.Logging.Serilog;
 using Avalonia.Controls.ApplicationLifetimes;
 
 namespace Client
@@ -17,7 +17,7 @@ namespace Client
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .LogToDebug()
+                .LogToTrace()
                 .RegisterInjections()
                 .UseReactiveUI();
     }
