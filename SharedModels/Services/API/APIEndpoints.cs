@@ -35,5 +35,15 @@ namespace Models.Services.API
         public static string CompileDeleteTranslationEndpoint(int id) => $"{TranslationsEndpoint}/{id}";
 
         #endregion
+
+        #region Language
+        public static string LanguageEndpoint { get; } = $"{APIEndpoint}/language";
+
+        public static string CompileGetLanguageEndpoint(CultureInfo cultureInfo) => $"{LanguageEndpoint}/{cultureInfo.Name}";
+        public static string GetLanguagesEndpoint { get; } = $"{LanguageEndpoint}/all";
+        public static string CreateLanguageEndpoint { get; } = $"{LanguageEndpoint}";
+        public static string UpdateLanguageEndpoint { get; } = $"{LanguageEndpoint}";
+        public static string CompileDeleteLanguageEndpoint(int id) => $"{LanguageEndpoint}/{id}";
+        #endregion
     }
 }

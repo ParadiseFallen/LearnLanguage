@@ -1,20 +1,16 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using ReactiveUI;
-using System.Reactive;
+using Avalonia.ReactiveUI;
+using Client.ViewModels;
 
 namespace Client.Views
 {
-    public class MainWindow : Window
+    public class SelectAppLanguageView : ReactiveUserControl<SelectAppLanguageViewModel>
     {
-        
-        public MainWindow()
+        public SelectAppLanguageView()
         {
-            InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
+            this.InitializeComponent();
         }
 
         private void InitializeComponent()

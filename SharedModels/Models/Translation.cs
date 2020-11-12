@@ -20,8 +20,10 @@ namespace SharedModels.Models
         {
             Translation otherTranslation = other as Translation;
             return
-                A.Text == otherTranslation.A.Text && B.Text == otherTranslation.B.Text ||
-                B.Text == otherTranslation.A.Text && A.Text == otherTranslation.B.Text;
+                (A.Text == otherTranslation.A.Text && B.Text == otherTranslation.B.Text) ||
+                (B.Text == otherTranslation.A.Text && A.Text == otherTranslation.B.Text);
         }
+
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

@@ -31,11 +31,12 @@ namespace Web.Services
         }
         public async Task<IEnumerable<IdentityError>> RegisterAsync(Login login)
         {
+            //var lang = 
             var createdUser = await UserManager.CreateAsync(new User() 
             { 
                 UserName = login.Username,
                 Email=login.Email,
-                NativeLanguage = login.Culture 
+                //NativeCulture  
             }, login.Password);
 
             if (createdUser.Succeeded)

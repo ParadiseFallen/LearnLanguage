@@ -1,7 +1,69 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<!--build configuration-->
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<NeutralLanguage />
+	</PropertyGroup>
+	<!--NuGetPackages-->
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="0.10.0-preview6" />
+		<PackageReference Include="Avalonia.Desktop" Version="0.10.0-preview6" />
+		<PackageReference Include="Avalonia.Diagnostics" Version="0.10.0-preview6" />
+		<PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0-preview6" />
+		<PackageReference Include="ReactiveUI.Fody" Version="12.1.5" />
+		<PackageReference Include="ReactiveUI.Validation" Version="1.8.6" />
+	</ItemGroup>
+	<!--reference packages-->
+	<ItemGroup>
+		<ProjectReference Include="..\SharedModels\Models.csproj" />
+	</ItemGroup>
+    <!--avalonia resx-->
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
+	</ItemGroup>
+	
+	<!--<ItemGroup>
+    <AvaloniaXaml Remove="Styles\DebugStyle.axaml" />
+    <AvaloniaXaml Remove="Styles\DefaultTheme.axaml" />
+  </ItemGroup>-->
+	<ItemGroup>
+		<AvaloniaResource Include="Styles\DebugStyle.axaml" />
+		<AvaloniaResource Include="Styles\DefaultTheme.axaml" />
+	</ItemGroup>
+	<!--<ItemGroup>
+    <AvaloniaXaml Update="Views\Auth\Login.axaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaXaml>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\Auth\Auth.axaml.cs">
+      <DependentUpon>Auth.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Auth\Login.axaml.cs">
+      <DependentUpon>Login.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Auth\Register.axaml.cs">
+      <DependentUpon>Register.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MainMenu.axaml.cs">
+      <DependentUpon>MainMenu.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SelectAppLanguage.axaml.cs">
+      <DependentUpon>SelectAppLanguage.axaml</DependentUpon>
+    </Compile>
+	  
+  </ItemGroup>-->
+
+</Project>
+
+<!--<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
@@ -35,4 +97,4 @@
       <DependentUpon>LoginView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
-</Project>
+</Project>-->

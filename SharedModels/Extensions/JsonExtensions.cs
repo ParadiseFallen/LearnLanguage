@@ -1,11 +1,6 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 
 namespace System.Text.Json
 {
@@ -24,11 +19,11 @@ namespace System.Text.Json
                     });
             return list;
         }
-        public static void AddAllConverters(this JsonOptions jsonOptions)
+        public static void AddAllConverters(this JsonSerializerOptions jsonOptions)
         {
             foreach (var item in GetAllConverters())
             {
-                jsonOptions.JsonSerializerOptions.Converters.Add(item);
+                jsonOptions.Converters.Add(item);
             }
             
         }

@@ -2,28 +2,20 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http.Json;
 using System.Text.Json;
-using Microsoft.AspNetCore.Identity;
+using System.Net.Http.Json;
 using System.Diagnostics;
 
 namespace Models.Services.API
 {
     public class AccountAPIService : APIServiceBase
     {
-        public AccountAPIService(string authCookieName,HttpApiClient httpApiClient, JsonSerializerOptions serializerOptions)
+        public AccountAPIService(HttpApiClient httpApiClient, JsonSerializerOptions serializerOptions)
             : base(httpApiClient, serializerOptions)
         {
-            AuthCookieName = authCookieName;
         }
-        public string AuthCookieName { get; }
-        public string AuthCookie 
-        { 
-            get => Http.Cookies.GetCookies(Http.Client.BaseAddress)[AuthCookieName].Value;
-            set => Http.Cookies.Add(new System.Net.Cookie(AuthCookieName, value,"/", Http.Client.BaseAddress.Host));
-        }
+        
 
         public async Task<string> Login(Login login)
         {

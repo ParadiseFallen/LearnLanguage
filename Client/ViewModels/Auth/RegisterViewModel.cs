@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Client.ViewModels
 {
-    public class RegisterViewModel : ReactiveValidationObject, IRoutableViewModel
+    public class RegisterVM : ReactiveValidationObject, IRoutableViewModel
     {
         private const string EmailRegex = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
         
@@ -54,8 +54,8 @@ namespace Client.ViewModels
         #endregion
 
         #region Ctors
-        public RegisterViewModel() { }
-        public RegisterViewModel(IScreen hostScreen)
+        public RegisterVM() { }
+        public RegisterVM(IScreen hostScreen)
         {
             HostScreen = hostScreen;
             Account = Locator.Current.GetService<AccountAPIService>();
@@ -95,7 +95,7 @@ namespace Client.ViewModels
                         Culture = new System.Globalization.CultureInfo("en-EN")
                     });
                     if (string.IsNullOrEmpty(result)) //succses
-                        await hostScreen.Router.NavigateAndReset.Execute(new LoginViewModel(HostScreen) {Username = Username });
+                        await hostScreen.Router.NavigateAndReset.Execute(new LoginVM(HostScreen) {Username = Username });
                     else
                         Errors = result;
                 },

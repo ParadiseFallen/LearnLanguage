@@ -46,7 +46,7 @@ namespace Web.Services
             var countToTake = count < filtered.Count() ? count : filtered.Count();
             return filtered.Take(countToTake).ToList().Select(t=> 
             {
-                if (t.B.Culture == referenceCulture && t.A.Culture == targetCulture)
+                if (t.B.Culture.CultureInfo == referenceCulture && t.A.Culture.CultureInfo == targetCulture)
                 {
                     var temp = t.A;
                     t.A = t.B;

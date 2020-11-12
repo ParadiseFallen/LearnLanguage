@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,11 +9,11 @@ using System.Text.Json.Serialization;
 
 namespace SharedModels.Models
 {
+    [Index("Username",IsUnique =true)]
     public class Login
     {
         [Required]
         [JsonPropertyName("username")]
-        [Index(IsUnique =true)]
         public string Username { get; set; }
         [Required]
         [JsonPropertyName("password")]

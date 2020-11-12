@@ -20,7 +20,7 @@ using Client.Services;
 
 namespace Client.ViewModels
 {
-    public class LoginViewModel : ReactiveValidationObject, IRoutableViewModel
+    public class LoginVM : ReactiveValidationObject, IRoutableViewModel
     {
         #region IRoutableViewModel
         public string UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
@@ -29,6 +29,7 @@ namespace Client.ViewModels
 
         #region Props
         private AccountAPIService Account { get; }
+        private ILocalSettingsService ConfigProvider { get; }
         [Reactive]
         public string Username { get; set; }
         [Reactive]
@@ -51,18 +52,14 @@ namespace Client.ViewModels
         #endregion
 
         #region Ctors
-        public LoginViewModel() { }
-        public LoginViewModel(IScreen Host)
+        public LoginVM() { }
+        public LoginVM(IScreen Host)
         {
             #region Base init
             HostScreen = Host;
             Account = Locator.Current.GetService<AccountAPIService>();
-            var prefs = PreferenceService.GetOrCreate();
-            if (prefs!= default)
-            {
-                Username = Username = prefs.Username;
-            }
-           
+            ConfigProvider = Locator.Current.GetService<ILocalSettingsService>();
+            Username = ConfigProvider.Config.Username;
             #endregion
 
             #region Validation
@@ -92,17 +89,18 @@ namespace Client.ViewModels
             Login.Subscribe(x => 
             {
                 Status = x;
-                if (RememberMe)
+                if (RememberMe && Status=="")
                 {
-                    prefs.Username = Username;
-                    PreferenceService.SaveLocalStore(prefs);
+                    ConfigProvider.Config.Username = Username;
+                    ConfigProvider.Config.AuthToken = Account.Http.AuthToken;
+                    ConfigProvider.Save();
                 }
             });
 
             //Account.AuthCookie = "test";
 
             Register = ReactiveCommand.Create(
-                () => HostScreen.Router.Navigate.Execute(new RegisterViewModel(HostScreen) { Username = Username }),
+                () => HostScreen.Router.Navigate.Execute(new RegisterVM(HostScreen) { Username = Username }),
                 canExecute: Login.IsExecuting.Select(x=>!x));
             #endregion
         }

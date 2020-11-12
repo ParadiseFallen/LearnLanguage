@@ -5,7 +5,7 @@ using ReactiveUI;
 
 namespace Client.Views
 {
-    public class LoginView : ReactiveUserControl<LoginViewModel>
+    public class LoginView : ReactiveUserControl<LoginVM>
     {
         public LoginView()
         {

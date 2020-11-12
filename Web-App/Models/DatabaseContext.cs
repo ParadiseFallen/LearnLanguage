@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using SharedModels.Models;
 using System.Globalization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Models.Models;
+using System.Drawing;
 
 namespace Web.Models
 {
@@ -16,6 +18,8 @@ namespace Web.Models
     {
         public DbSet<Phrase> Phrases { get; set; }
         public DbSet<Translation> Translations { get; set; }
+        public DbSet<Language> Languages { get; set; }
+
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -32,13 +36,24 @@ namespace Web.Models
             base.OnModelCreating(modelBuilder);
 
             modelBuilder
-                .Entity<Phrase>()
-                .Property(e => e.Culture)
+                .Entity<Language>()
+                .Property(e => e.CultureInfo)
                 .HasConversion(ci=>ci.Name,ci=>new CultureInfo(ci));
             modelBuilder
-                .Entity<User>()
-                .Property(e => e.NativeLanguage)
-                .HasConversion(ci => ci.Name, ci => new CultureInfo(ci));
+                .Entity<Language>()
+                .Property(e => e.Flag)
+                .HasConversion(x=>ImageToByte(x),x=> ByteToImage(x));
+        }
+        private static byte[] ImageToByte(Image img)
+        {
+            ImageConverter converter = new ImageConverter();
+            return (byte[])converter.ConvertTo(img, typeof(byte[]));
+        }
+
+        private static Image ByteToImage(byte[] data)
+        {
+            ImageConverter converter = new ImageConverter();
+            return (Image)converter.ConvertTo(data, typeof(Image));
         }
     }
 }

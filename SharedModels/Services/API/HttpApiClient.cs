@@ -11,11 +11,18 @@ namespace Models.Services.API
         public CookieContainer Cookies { get; protected set; }
         public HttpClientHandler Handler { get; protected set; }
         public HttpClient Client { get; protected set; }
-        public HttpApiClient(Uri baseURI) 
+        public string AuthCookieName { get;}
+        public string AuthToken
         {
+            get => Cookies.GetCookies(Client.BaseAddress)[AuthCookieName].Value;
+            set => Cookies.Add(new Cookie(AuthCookieName, value, "/", Client.BaseAddress.Host));
+        }
+
+        public HttpApiClient(Uri baseURI,string authCookieName = ".AspNetCore.Identity.Application")
+        {
+            AuthCookieName = authCookieName;
             if (baseURI == null)
                 throw new NullReferenceException($"Base URI undefined!");
-
             Cookies = new CookieContainer();
             Handler = new HttpClientHandler() { CookieContainer = Cookies };
             Client = new HttpClient(Handler) { BaseAddress = baseURI };
@@ -25,5 +32,6 @@ namespace Models.Services.API
             Handler.Dispose();
             Client.Dispose();
         }
+        
     }
 }

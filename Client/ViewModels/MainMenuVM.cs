@@ -3,7 +3,7 @@ using System;
 
 namespace Client.ViewModels
 {
-    public class MainMenuViewModel : ReactiveObject, IRoutableViewModel
+    public class MainMenuVM : ReactiveObject, IRoutableViewModel
     {
         #region IRoutableViewModel
         public string UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
@@ -18,7 +18,7 @@ namespace Client.ViewModels
         #endregion
 
         #region Ctors
-        public MainMenuViewModel(IScreen hostScreen)
+        public MainMenuVM(IScreen hostScreen)
         {
             HostScreen = hostScreen;
         }
