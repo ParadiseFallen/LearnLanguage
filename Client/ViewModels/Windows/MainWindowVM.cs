@@ -15,10 +15,12 @@ namespace Client.ViewModels
         private ILocalSettingsService ConfigService { get; }
         public MainWindowVM()
         {
-            ConfigService = Locator.Current.GetService<ILocalSettingsService>();
             Router = new RoutingState();
+            ConfigService = Locator.Current.GetService<ILocalSettingsService>();
+            var canAccesApiTask = Locator.Current.GetService<HttpApiClient>().IsActive();
+            canAccesApiTask.Wait();
             var token = ConfigService.Config.AuthToken;
-            if (string.IsNullOrEmpty(token)||true)
+            if (string.IsNullOrEmpty(token)|| !canAccesApiTask.Result)
                 this.Router.Navigate.Execute(new AuthVM(this));
             else
             {

@@ -8,6 +8,17 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Client.Views.MainMenuView">
 
+	<DockPanel>
+		<!--account-->
+		<Panel DockPanel.Dock="Top" HorizontalAlignment="Right" VerticalAlignment="Top">
+			<Button Content="Exit account"/>
+		</Panel>
 
+		<!--menu-->
+		<Panel>
+			
+		</Panel>
+		
+	</DockPanel>
     
 </UserControl>

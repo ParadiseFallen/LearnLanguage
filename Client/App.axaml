@@ -1,9 +1,9 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:sm="clr-namespace:SharedModels.Models;assembly=Models"
              xmlns:local="clr-namespace:Client"
              x:Class="Client.App">
     <Application.DataTemplates>
-        <local:ViewLocator/>
     </Application.DataTemplates>
 
     <Application.Styles>
@@ -12,5 +12,13 @@
 		<StyleInclude Source="/Styles/DefaultTheme.axaml" />
 		<StyleInclude Source="/Styles/DebugStyle.axaml" />
 	</Application.Styles>
+
+	<Application.DataTemplates>
+		<DataTemplate DataType="{x:Type sm:Phrase}">
+			<StackPanel>
+				<TextBlock Text="{Binding Text}"/>
+			</StackPanel>
+		</DataTemplate>
+	</Application.DataTemplates>
 	
 </Application>

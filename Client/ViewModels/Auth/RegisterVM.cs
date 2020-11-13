@@ -26,7 +26,7 @@ namespace Client.ViewModels
         public IScreen HostScreen { get; }
         #endregion
 
-        #region props
+        #region Props
         [Reactive]
         public string Username { get; set; }
         [Reactive]
@@ -57,8 +57,11 @@ namespace Client.ViewModels
         public RegisterVM() { }
         public RegisterVM(IScreen hostScreen)
         {
+            #region ctor
             HostScreen = hostScreen;
             Account = Locator.Current.GetService<AccountAPIService>();
+            #endregion
+
             #region Validation
 
             UsernameHelper = this.ValidationRule(
@@ -84,6 +87,15 @@ namespace Client.ViewModels
             "This is not Email.");
             #endregion
 
+            #region Commands
+            var canRegister = this.WhenAnyValue(vm=>vm.Username, vm => vm.RepeatPassword, vm => vm.Email, vm => vm.Password, 
+                (username,rPassword,email,password) => 
+                !string.IsNullOrEmpty(username)&&
+                !string.IsNullOrEmpty(email) &&
+                !string.IsNullOrEmpty(password) &&
+                !string.IsNullOrEmpty(rPassword)&&
+                this.ValidationContext.IsValid
+                );
             Register = ReactiveCommand.CreateFromTask(
                 async () =>
                 {
@@ -99,9 +111,13 @@ namespace Client.ViewModels
                     else
                         Errors = result;
                 },
-                canExecute: this.IsValid());
+                canExecute: canRegister);
 
-            GoBack = ReactiveCommand.CreateFromTask(async () => { await hostScreen.Router.NavigateBack.Execute(); }, Register.IsExecuting.Select(x => !x));
+            GoBack = ReactiveCommand.CreateFromTask(async () => 
+            { 
+                await hostScreen.Router.NavigateBack.Execute(); 
+            }, Register.IsExecuting.Select(x => !x));
+            #endregion
         }
         #endregion
     }

@@ -21,6 +21,9 @@ namespace Client.ViewModels
         public MainMenuVM(IScreen hostScreen)
         {
             HostScreen = hostScreen;
+
+
+
         }
         #endregion
     }

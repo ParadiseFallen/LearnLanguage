@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Models.Services.API
 {
@@ -17,7 +18,7 @@ namespace Models.Services.API
             get => Cookies.GetCookies(Client.BaseAddress)[AuthCookieName].Value;
             set => Cookies.Add(new Cookie(AuthCookieName, value, "/", Client.BaseAddress.Host));
         }
-
+        
         public HttpApiClient(Uri baseURI,string authCookieName = ".AspNetCore.Identity.Application")
         {
             AuthCookieName = authCookieName;
@@ -32,6 +33,10 @@ namespace Models.Services.API
             Handler.Dispose();
             Client.Dispose();
         }
-        
+        public async Task<bool> IsActive()
+        {
+            var t = await Client.GetAsync(APIEndpoints.APIEndpoint);
+            return t.IsSuccessStatusCode;
+        }
     }
 }

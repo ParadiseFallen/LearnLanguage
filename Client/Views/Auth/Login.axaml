@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Client.Views.LoginView">
 	<Design.DataContext>
-		<vm:LoginViewModel/>
+		<vm:LoginVM/>
 	</Design.DataContext>
 	<DockPanel>
 
@@ -19,12 +19,12 @@
 				<TextBox FontSize="20" Classes="roundInput" Text="{Binding Password}" Watermark="Password" PasswordChar="&#8226;" IsEnabled="{Binding !Login.IsExecuting^}" Background="#e6e6e6" Foreground="#666666"/>
 				<CheckBox Content="Remember me" Margin="15,0" FontSize="20" IsChecked="{Binding RememberMe}" IsEnabled="{Binding !Login.IsExecuting^}"/>
 				<Button Classes="loginButton" Content="Login" Command="{Binding Login}"/>
-				<Button Classes="buttonAsLink" Content="Forget a password?" Command="{Binding Login}"/>
+				<Button Classes="buttonAsLink" Content="Forget a password?" IsEnabled="False" ToolTip.Tip="Not implimented yet."/>
 			</StackPanel>
 		</Panel>
 		
 		<Panel  DockPanel.Dock="Bottom" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-			<Button Content="Don't have an account? Register&#8594;" Command="{Binding Register}" Classes="buttonAsLink"/>
+			<Button Content="Don't have an account? Register&#8594;" Command="{Binding Register}" Classes="buttonAsLink" />
 		</Panel>
 	</DockPanel>
 

@@ -13,13 +13,11 @@
 			 >
 
 	<Design.DataContext>
-		<vm:AuthViewModel/>
+		<vm:AuthVM/>
 	</Design.DataContext>
 
 	<Border Margin="200,100" Classes="roundBorder">
 		<Grid Background="White">
-
-			<ContentPresenter CornerRadius="50"/>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="5*"/>
 				<ColumnDefinition Width="5*"/>

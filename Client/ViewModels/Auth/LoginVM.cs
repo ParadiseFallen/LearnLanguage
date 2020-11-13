@@ -84,8 +84,13 @@ namespace Client.ViewModels
                     Password = this.Password
                 });
             },
-            canExecute: this.IsValid());
+            canExecute: 
+            this.WhenAnyValue(
+                vm => vm.Password,
+                vm => vm.Username, 
+                (p, u) => !string.IsNullOrEmpty(p) && !string.IsNullOrEmpty(u)));
 
+            //when login completed
             Login.Subscribe(x => 
             {
                 Status = x;

@@ -10,6 +10,6 @@ namespace Web_App.API
     public class StatusAPI : Controller
     {
         [HttpGet]
-        public bool IsOnline() => true;
+        public IActionResult IsOnline() => Ok();
     }
 }
