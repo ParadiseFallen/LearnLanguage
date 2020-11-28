@@ -12,7 +12,7 @@ namespace System.Text.Json
             typeof(JsonExtension)
                     .Assembly
                     .GetTypes()
-                    .Where(type => !type.IsAbstract && type.Namespace.Contains(nameof(SharedModels.JsonConverters)))
+                    .Where(type => !type.IsAbstract && type.Namespace.Contains(nameof(Models.JsonConverters)))
                     .ToList().ForEach(type =>
                     {
                         list.Add((JsonConverter)type.GetConstructor(Type.EmptyTypes).Invoke(null));

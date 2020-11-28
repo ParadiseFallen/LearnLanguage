@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SharedModels.JsonConverters;
+using Models.JsonConverters;
 using Web.Data;
 using Web.Models;
 using Web.Services;

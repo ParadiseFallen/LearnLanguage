@@ -9,15 +9,17 @@
 			 xmlns:vm="clr-namespace:Client.ViewModels;assembly=Client"
              xmlns:v="clr-namespace:Client.Views;assembly=Client"
              x:Class="Client.Views.AuthView"
-			 Classes="authGradient"
 			 >
 
 	<Design.DataContext>
 		<vm:AuthVM/>
 	</Design.DataContext>
 
-	<Border Margin="200,100" Classes="roundBorder">
-		<Grid Background="White">
+		<Grid>
+			<!--popup-->
+			<!--<Panel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ZIndex="1" Grid.ColumnSpan="2" Classes="Popup">
+				--><!--<Label FontSize="80">fawoubhnifonawhuiiiiiiiii</Label>--><!--
+			</Panel>-->
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="5*"/>
 				<ColumnDefinition Width="5*"/>
@@ -35,5 +37,5 @@
 				</rx:RoutedViewHost>
 			</Grid>
 		</Grid>
-	</Border>
+	
 </UserControl>

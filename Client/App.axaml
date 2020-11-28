@@ -1,24 +1,35 @@
-﻿<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:sm="clr-namespace:SharedModels.Models;assembly=Models"
-             xmlns:local="clr-namespace:Client"
-             x:Class="Client.App">
-    <Application.DataTemplates>
-    </Application.DataTemplates>
-
-    <Application.Styles>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
+﻿<Application 
+			xmlns="https://github.com/avaloniaui"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:vm="clr-namespace:Client.ViewModels"
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			xmlns:rx="http://reactiveui.net"
+			xmlns:v="clr-namespace:Client.Views;assembly=Client"
+			xmlns:sm="clr-namespace:SharedModels.Models;assembly=Models"
+			xmlns:c="clr-namespace:Client.Converters;assembly=Client"
+            xmlns:local="clr-namespace:Client"
+            x:Class="Client.App">
+	<Application.DataTemplates>
+	</Application.DataTemplates>
+	
+	<Application.Resources>
+		<c:ImageToBitmapConverter x:Key="ImageToBitmap"/>
+	</Application.Resources>
+	
+	<Application.Styles>
+		<StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
 		<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
 		<StyleInclude Source="/Styles/DefaultTheme.axaml" />
 		<StyleInclude Source="/Styles/DebugStyle.axaml" />
 	</Application.Styles>
 
-	<Application.DataTemplates>
+	<!--<Application.DataTemplates>
 		<DataTemplate DataType="{x:Type sm:Phrase}">
 			<StackPanel>
 				<TextBlock Text="{Binding Text}"/>
 			</StackPanel>
 		</DataTemplate>
-	</Application.DataTemplates>
-	
+	</Application.DataTemplates>-->
+
 </Application>

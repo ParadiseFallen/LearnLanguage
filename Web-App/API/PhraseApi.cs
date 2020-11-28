@@ -19,12 +19,10 @@ namespace Web.API
     {
         private TTSService TTS { get;  }
         private PhraseService PhraseService { get;  }
-
         public PhraseApi(PhraseService phraseService,TTSService tts)
         {
             PhraseService = phraseService;
         }
-
         [HttpPost]
         public async Task<Phrase> UpdatePhraseAsync([FromBody]Phrase phrase)
         {

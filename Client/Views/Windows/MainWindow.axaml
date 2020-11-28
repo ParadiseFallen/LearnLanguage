@@ -9,20 +9,25 @@
         x:Class="Client.Views.MainWindow"
         Icon="/Assets/logo.jpg"
         Title="Client"
-		MinWidth="1000"
+		MinWidth="800"
 		MinHeight="600"
+		Classes="authGradient"
 		>
 	
 	<Design.DataContext>
-		<vm:MainWindowViewModel/>
+		<vm:MainWindowVM/>
 	</Design.DataContext>
-
-	<rx:RoutedViewHost Router="{Binding Router}">
-		<rx:RoutedViewHost.DefaultContent>
-			<TextBlock Text="Default content"
-					   HorizontalAlignment="Center"
-					   VerticalAlignment="Center" />
-		</rx:RoutedViewHost.DefaultContent>
-	</rx:RoutedViewHost>
+	
+	<Border Margin="200,100" Classes="roundBorder">
+		<Panel Background="#ffffff">
+			<rx:RoutedViewHost Router="{Binding Router}">
+				<rx:RoutedViewHost.DefaultContent>
+					<TextBlock Text="App loading... Please wait"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center" />
+				</rx:RoutedViewHost.DefaultContent>
+			</rx:RoutedViewHost>
+		</Panel>
+	</Border>
 	
 </Window>

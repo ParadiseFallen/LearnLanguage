@@ -16,11 +16,20 @@ namespace Client.ViewModels
         public MainWindowVM()
         {
             Router = new RoutingState();
+            //this.Router.Navigate.Execute(new MainMenuVM(this));
+            //return;
             ConfigService = Locator.Current.GetService<ILocalSettingsService>();
-            var canAccesApiTask = Locator.Current.GetService<HttpApiClient>().IsActive();
-            canAccesApiTask.Wait();
+            Init();
+        }
+
+        private async void Init()
+        {
+            //this.Router.Navigate.Execute(new MainMenuVM(this));
+            //return;
+            var client = Locator.Current.GetService<HttpApiClient>();
+            var canAccesApiTask = await client.IsActive();
             var token = ConfigService.Config.AuthToken;
-            if (string.IsNullOrEmpty(token)|| !canAccesApiTask.Result)
+            if (string.IsNullOrEmpty(token)|| !canAccesApiTask)
                 this.Router.Navigate.Execute(new AuthVM(this));
             else
             {

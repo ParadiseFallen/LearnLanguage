@@ -35,18 +35,18 @@ namespace Web.Services
         //    });
 
         public async Task<IEnumerable<Translation>> GetRandomTranslationsAsync
-            (CultureInfo referenceCulture, CultureInfo targetCulture, int count)
+            (CultureInfo targetCulture, CultureInfo referenceCulture,  int count)
         {
             var random = new Random();
-            var filtered = Database.Translations.Include(x => x.A).Include(x => x.B).AsEnumerable()
+            var filtered = Database.Translations.Include(x => x.A).ThenInclude(x=>x.Culture).Include(x => x.B).ThenInclude(x=>x.Culture).AsEnumerable()
                                 .Where(t =>
-                t.A.Culture.Equals(referenceCulture) && t.B.Culture.Equals(targetCulture) ||
-                t.B.Culture.Equals(referenceCulture) && t.A.Culture.Equals(targetCulture))
+                t.A.Culture.CultureInfo.Equals(referenceCulture) && t.B.Culture.CultureInfo.Equals(targetCulture) ||
+                t.B.Culture.CultureInfo.Equals(referenceCulture) && t.A.Culture.CultureInfo.Equals(targetCulture))
                                 .OrderBy(r => random.Next()); //shuffle
             var countToTake = count < filtered.Count() ? count : filtered.Count();
             return filtered.Take(countToTake).ToList().Select(t=> 
             {
-                if (t.B.Culture.CultureInfo == referenceCulture && t.A.Culture.CultureInfo == targetCulture)
+                if (t.B.Culture.CultureInfo.Equals(referenceCulture) && t.A.Culture.CultureInfo.Equals(targetCulture))
                 {
                     var temp = t.A;
                     t.A = t.B;

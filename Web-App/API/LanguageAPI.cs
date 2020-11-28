@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using Web.Services;
 namespace Web.API
 {
     [Route("/api/language")]
+    [Authorize(AuthenticationSchemes = "Identity.Application")]
     public class LanguageAPI : Controller
     {
         private LanguageService Service { get; }

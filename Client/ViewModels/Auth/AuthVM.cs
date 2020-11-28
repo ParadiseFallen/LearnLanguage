@@ -12,9 +12,11 @@ namespace Client.ViewModels
         public IScreen HostScreen { get; private set; }
         public RoutingState Router { get; }
         #endregion
+#if DEBUG
         public AuthVM()
         {
         }
+#endif
         public AuthVM(IScreen hostScreen = null)
         {
             Router = new RoutingState();

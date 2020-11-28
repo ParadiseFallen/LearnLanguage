@@ -8,6 +8,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Models.Models;
 using System.Drawing;
+using System.IO;
 
 namespace Web.Models
 {
@@ -46,14 +47,19 @@ namespace Web.Models
         }
         private static byte[] ImageToByte(Image img)
         {
-            ImageConverter converter = new ImageConverter();
-            return (byte[])converter.ConvertTo(img, typeof(byte[]));
+            using (MemoryStream mStream = new MemoryStream())
+            {
+                img.Save(mStream, img.RawFormat);
+                return mStream.ToArray();
+            }
         }
 
         private static Image ByteToImage(byte[] data)
         {
-            ImageConverter converter = new ImageConverter();
-            return (Image)converter.ConvertTo(data, typeof(Image));
+            using (MemoryStream mStream = new MemoryStream(data))
+            {
+                return Image.FromStream(mStream);
+            }
         }
     }
 }

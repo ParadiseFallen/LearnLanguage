@@ -1,0 +1,61 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Client.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:rx="http://reactiveui.net"
+        xmlns:v="clr-namespace:Client.Views;assembly=Client"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+        x:Class="Client.Views.MainMenuView"
+			 >
+
+	<Design.DataContext>
+		<vm:MainMenuVM/>
+	</Design.DataContext>
+
+	<DockPanel Background="#fff">
+		<StackPanel DockPanel.Dock="Top">
+			<Label Content="I will learn :" FontSize="20" HorizontalContentAlignment="Center"/>
+			<DropDown 
+				Items="{Binding Languages}"
+				SelectedItem="{Binding ToLanguageSelected}" 
+				PlaceholderText="Select language please" 
+				MaxDropDownHeight="200"
+				HorizontalContentAlignment="Center"
+				>
+				<DropDown.ItemTemplate>
+					<DataTemplate>
+						<DockPanel HorizontalAlignment="Center">
+							<TextPresenter Text="{Binding Name}" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
+							<Image DockPanel.Dock="Top" HorizontalAlignment="Center" Source="{Binding Flag, Converter={StaticResource ImageToBitmap}}" Width="100" Height="100"/>
+						</DockPanel>
+					</DataTemplate>
+				</DropDown.ItemTemplate>
+			</DropDown>
+		</StackPanel>
+		
+		<StackPanel DockPanel.Dock="Top">
+			<Label Content="Translate phrase to :" FontSize="20" HorizontalContentAlignment="Center"/>
+			<DropDown Items="{Binding Languages}" 
+					  SelectedItem="{Binding FromLanguageSelected}" 
+					  PlaceholderText="Select language please" 
+					  MaxDropDownHeight="200"
+					  HorizontalContentAlignment="Center"
+					  >
+				<DropDown.ItemTemplate>
+					<DataTemplate>
+						<DockPanel HorizontalAlignment="Center">
+							<TextPresenter Text="{Binding Name}" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
+							<Image DockPanel.Dock="Top" HorizontalAlignment="Center" Source="{Binding Flag, Converter={StaticResource ImageToBitmap}}" Width="100" Height="100"/>
+						</DockPanel>
+					</DataTemplate>
+				</DropDown.ItemTemplate>
+			</DropDown>
+		</StackPanel>
+
+		<Button DockPanel.Dock="Bottom" Content="Exit app" Command="{Binding Exit}"/>
+		<Button DockPanel.Dock="Bottom" Content="Exit account" Command="{Binding Acount}"/>
+		<Button DockPanel.Dock="Bottom" Content="Learn!" Command="{Binding Learn}"/>
+	</DockPanel>
+
+</UserControl>

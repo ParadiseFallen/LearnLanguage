@@ -54,7 +54,9 @@ namespace Client.ViewModels
         #endregion
 
         #region Ctors
+#if DEBUG
         public RegisterVM() { }
+#endif
         public RegisterVM(IScreen hostScreen)
         {
             #region ctor

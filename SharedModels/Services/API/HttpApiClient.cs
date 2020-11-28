@@ -12,14 +12,14 @@ namespace Models.Services.API
         public CookieContainer Cookies { get; protected set; }
         public HttpClientHandler Handler { get; protected set; }
         public HttpClient Client { get; protected set; }
-        public string AuthCookieName { get;}
+        public string AuthCookieName { get; }
         public string AuthToken
         {
             get => Cookies.GetCookies(Client.BaseAddress)[AuthCookieName].Value;
             set => Cookies.Add(new Cookie(AuthCookieName, value, "/", Client.BaseAddress.Host));
         }
-        
-        public HttpApiClient(Uri baseURI,string authCookieName = ".AspNetCore.Identity.Application")
+
+        public HttpApiClient(Uri baseURI, string authCookieName = ".AspNetCore.Identity.Application")
         {
             AuthCookieName = authCookieName;
             if (baseURI == null)
@@ -35,8 +35,17 @@ namespace Models.Services.API
         }
         public async Task<bool> IsActive()
         {
-            var t = await Client.GetAsync(APIEndpoints.APIEndpoint);
-            return t.IsSuccessStatusCode;
+            try
+            {
+                var x = Client.GetAsync(APIEndpoints.APIEndpoint);
+                var t = await x;
+                return t.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
         }
     }
 }

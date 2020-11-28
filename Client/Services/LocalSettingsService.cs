@@ -21,14 +21,14 @@ namespace Client.Services
         public Action<string> OnSave { get; set; }
 
         private LocalSettings config;
-        public LocalSettings Config 
-        { 
-            get 
+        public LocalSettings Config
+        {
+            get
             {
                 if (config == null)
                     this.Load();
                 return config;
-            } 
+            }
         }
 
         public LocalSettingsService(string filePath = ".", string filename = "app.cfg")
@@ -39,8 +39,6 @@ namespace Client.Services
         }
         public ILocalSettingsService Load()
         {
-            if (config!= null)
-                return this;
             try
             {
                 if (Info.Exists)
@@ -51,12 +49,16 @@ namespace Client.Services
                         config = JsonSerializer.Deserialize<LocalSettings>(data, Options);
                     }
                 else
-                    config= LocalSettings.Default;
+                    config = LocalSettings.Default;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("configuration not found. use default configuration."); //replace to logger
                 config = LocalSettings.Default;
+            }
+            finally
+            { 
+                Save();
             }
             return this;
         }
@@ -68,7 +70,7 @@ namespace Client.Services
                 if (!Info.Exists)
                     Info.Create().Close();
                 using (StreamWriter sw = new StreamWriter($"{FilePath}/{Filename}", false))
-                    sw.Write(JsonSerializer.Serialize(Config, Options));
+                    sw.Write(JsonSerializer.Serialize(config, Options));
             }
             catch (Exception ex)
             {
@@ -76,5 +78,6 @@ namespace Client.Services
             }
             return this;
         }
+        
     }
 }

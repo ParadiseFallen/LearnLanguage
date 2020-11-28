@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace SharedModels.JsonConverters
+namespace Models.JsonConverters
 {
     public class CultureConverter : JsonConverter<CultureInfo>
     {

@@ -52,7 +52,9 @@ namespace Client.ViewModels
         #endregion
 
         #region Ctors
+#if DEBUG
         public LoginVM() { }
+#endif
         public LoginVM(IScreen Host)
         {
             #region Base init
@@ -94,15 +96,18 @@ namespace Client.ViewModels
             Login.Subscribe(x => 
             {
                 Status = x;
-                if (RememberMe && Status=="")
+                if (RememberMe && string.IsNullOrEmpty(Status))
                 {
                     ConfigProvider.Config.Username = Username;
                     ConfigProvider.Config.AuthToken = Account.Http.AuthToken;
                     ConfigProvider.Save();
                 }
+                if (string.IsNullOrEmpty(Status))
+                {
+                    var main = HostScreen as AuthVM;
+                    main.HostScreen.Router.Navigate.Execute(new MainMenuVM(HostScreen));
+                }
             });
-
-            //Account.AuthCookie = "test";
 
             Register = ReactiveCommand.Create(
                 () => HostScreen.Router.Navigate.Execute(new RegisterVM(HostScreen) { Username = Username }),

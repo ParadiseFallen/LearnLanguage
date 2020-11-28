@@ -21,7 +21,14 @@ namespace Models.Services
         }
         public async Task<IEnumerable<Language>> GetLanguages()
         {
-            return await Http.Client.GetFromJsonAsync<IEnumerable<Language>>(APIEndpoints.GetLanguagesEndpoint);
+            try
+            {
+                return await Http.Client.GetFromJsonAsync<IEnumerable<Language>>(APIEndpoints.GetLanguagesEndpoint,SerializerOptions);
+            }
+            catch (System.Exception ex)
+            {
+                return new List<Language>();
+            }
         }
 
     }

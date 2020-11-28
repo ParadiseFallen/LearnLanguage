@@ -25,44 +25,41 @@ namespace Client.ViewModels
 
         #region Props
         [Reactive]
-        public Translation Translation { get; private set; }
-        private IEnumerable<Translation> Translations { get; set; }
-        private TranslateAPIService TranslateService { get; }
-        private ILocalSettingsService ConfigService { get; }
-        private Language BaseLanguage { get; }
-        private Language TargetLanguage { get; }
-
+        public Translation CurrentTranslation { get; private set; }
+        private IEnumerable<Translation> Translations { get; init; }
         #endregion
 
         #region Commands
+        [Reactive]
         public IReactiveCommand MoveNext { get; set; }
-        public IReactiveCommand Exit {get; set; }
+        public IReactiveCommand Exit { get; set; }
         #endregion
 
         #region Ctors
-        public LearnPhrasesVM(IScreen hostScreen,Language baseLanguage,Language target)
+        public LearnPhrasesVM(IScreen hostScreen, IEnumerable<Translation> translations)
         {
             HostScreen = hostScreen;
-            TranslateService = Locator.Current.GetService<TranslateAPIService>();
-            ConfigService = Locator.Current.GetService<ILocalSettingsService>();
-            BaseLanguage = baseLanguage;
-            TargetLanguage = target;
+            Translations = translations;
+            Exit = ReactiveCommand.Create(() => { HostScreen.Router.NavigateBack.Execute(); });
             Init();
         }
 
         private async void Init()
         {
-            //get translations
-            Translations = await TranslateService.GetRandomTranslations(BaseLanguage.CultureInfo, TargetLanguage.CultureInfo, 5);
-            
-            //create move next
+            ////get translations
+            //Translations = await TranslateService.GetRandomTranslations(BaseLanguage.CultureInfo, TargetLanguage.CultureInfo, 5);
+
+            ////create move next
             var enumerator = Translations.GetEnumerator();
+            enumerator.MoveNext();
+            CurrentTranslation = enumerator.Current;
             MoveNext = ReactiveCommand.Create(() =>
             {
                 if (enumerator.MoveNext())
-                    Translation = enumerator.Current;
+                    CurrentTranslation = enumerator.Current;
                 else
                     HostScreen.Router.Navigate.Execute(new ExamPhrasesVM(HostScreen, Translations));
+                //Console.WriteLine(CurrentTranslation.B.Text);
             });
         }
         #endregion

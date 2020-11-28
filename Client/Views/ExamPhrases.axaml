@@ -4,5 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Client.Views.ExamPhrases">
-    Welcome to Avalonia!
+	
+	<Grid RowDefinitions="4*,2*,4*">
+		<TextBox Watermark="Enter translation here" Grid.Row="0" FontSize="40" Text="{Binding AText}" IsEnabled="{Binding CanInput}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		
+		<StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
+			<Label Content="{Binding CorrectMarker}" HorizontalAlignment="Center" FontSize="25"/>
+			<WrapPanel  HorizontalAlignment="Center" VerticalAlignment="Center">
+				<Button Content="Exit" Margin="20"  FontSize="25" Command="{Binding Exit}"/>
+				<Label Content="Exam mode" FontWeight="600" Foreground="Red" VerticalAlignment="Center" FontSize="25"/>
+				<Button Content="Check" Margin="20" FontSize="25" Command="{Binding Check}" IsEnabled="{Binding !IsMoveNextAvable}" IsVisible="{Binding !IsMoveNextAvable}" HotKey="Enter"/>
+				<Button Content="Next" Margin="20" FontSize="25" Command="{Binding MoveNext}" IsEnabled="{Binding IsMoveNextAvable}" IsVisible="{Binding IsMoveNextAvable}" HotKey="Enter"/>
+			</WrapPanel>
+		</StackPanel>
+		
+		<TextBlock Grid.Row="2" Text="{Binding CurrentTranslation.B.Text}" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	</Grid>
+	
 </UserControl>

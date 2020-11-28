@@ -2,7 +2,7 @@
 	<!--build configuration-->
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+		<TargetFramework>net5.0</TargetFramework>
 		<NeutralLanguage />
 		<AnalysisLevel>5.0</AnalysisLevel>
 		<SignAssembly>false</SignAssembly>
@@ -13,6 +13,8 @@
 		<PackageReference Include="Avalonia.Desktop" Version="0.10.0-preview6" />
 		<PackageReference Include="Avalonia.Diagnostics" Version="0.10.0-preview6" />
 		<PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0-preview6" />
+		<PackageReference Include="CommandLineParser" Version="2.9.0-preview1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
 		<PackageReference Include="ReactiveUI.Fody" Version="12.1.5" />
 		<PackageReference Include="ReactiveUI.Validation" Version="1.8.6" />
 	</ItemGroup>
@@ -23,6 +25,9 @@
     <!--avalonia resx-->
 	<ItemGroup>
 		<AvaloniaResource Include="Assets\**" />
+		<AvaloniaResource Include="Assets\*" />
+		<AvaloniaResource Include="Assets/*" />
+		<AvaloniaResource Include="Assets/*.*" />
 	</ItemGroup>
 	
 	<!--<ItemGroup>
