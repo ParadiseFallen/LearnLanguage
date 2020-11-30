@@ -9,7 +9,8 @@ using System.Diagnostics;
 
 namespace Models.Services.API
 {
-    public class AccountAPIService : APIServiceBase
+    /// <inheritdoc/>
+    public class AccountAPIService : APIServiceBase<string>
     {
         public AccountAPIService(HttpApiClient httpApiClient, JsonSerializerOptions serializerOptions)
             : base(httpApiClient, serializerOptions)

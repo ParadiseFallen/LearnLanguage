@@ -19,6 +19,7 @@ using SharedModels.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace Web
 {
@@ -42,8 +43,17 @@ namespace Web
                 options.EnableSensitiveDataLogging(true);
             });
 
-            services.AddAuthorizationCore(options => { });
-            services.AddAuthenticationCore(options => { });
+            services.AddAuthorization(options => { });
+            services.AddAuthentication(options => { })
+                .AddCookie(cookie =>
+                {
+                    cookie.Events.DisableRedirectForPath(e => e.OnRedirectToLogin,
+                    "/api", StatusCodes.Status401Unauthorized);
+                    cookie.Events.DisableRedirectForPath(e =>
+                    e.OnRedirectToAccessDenied,
+                    "/api", StatusCodes.Status403Forbidden);
+                });
+
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 8;
@@ -60,7 +70,7 @@ namespace Web
 
             services.AddServerSideBlazor();
             services.AddRazorPages()
-                .AddJsonOptions(opt=> opt.JsonSerializerOptions.AddAllConverters());
+                .AddJsonOptions(opt => opt.JsonSerializerOptions.AddAllConverters());
 
             #region register services
             services.AddSingleton<WeatherForecastService>(); //REMOVE
@@ -83,13 +93,12 @@ namespace Web
             }
             else
             {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                //app.UseExceptionHandler("/Error");
+                //app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
             app.UseAuthorization();
             app.UseAuthentication();
@@ -103,7 +112,6 @@ namespace Web
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToPage("/_Host");
             });
-
         }
     }
 }

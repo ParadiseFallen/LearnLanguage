@@ -11,7 +11,7 @@ using Web.Services;
 namespace Web.API
 {
     [Route("/api/language")]
-    [Authorize(AuthenticationSchemes = "Identity.Application")]
+    [Authorize(AuthenticationSchemes = "Identity.Application", Roles = "User")]
     public class LanguageAPI : Controller
     {
         private LanguageService Service { get; }
@@ -48,5 +48,7 @@ namespace Web.API
                 return Ok();
             return Conflict("Language not exist.");
         }
+        //[Route("/Error")]
+        //public async Task<APIResponse<Language>> Error()=>
     }
 }

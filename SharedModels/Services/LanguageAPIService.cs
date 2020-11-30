@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Models.Services
 {
-    public class LanguageAPIService : APIServiceBase
+    /// <inheritdoc/>
+    public class LanguageAPIService : APIServiceBase<string>
     {
         public LanguageAPIService(HttpApiClient httpApiClient, JsonSerializerOptions serializerOptions) : base(httpApiClient, serializerOptions)
         {
