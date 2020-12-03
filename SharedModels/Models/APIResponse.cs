@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Models.Models
+namespace Models
 {
     /// <summary>
     /// Contains the necessary data to work with response from the server
@@ -13,10 +9,13 @@ namespace Models.Models
     /// <remarks>
     /// Immuteble data.
     /// </remarks>
-    public record APIResponse<T>
+    public record ApiResponse<T>
     {
-        public APIResponse(IEnumerable<string> errors = null, T content = default) => (Errors, Content) = (errors, content);
+        public ApiResponse(IEnumerable<string> errors = null, T content = default) => 
+            (Errors, Content) = (errors, content);
+
         public IEnumerable<string> Errors { get; init; }
+
         public T Content { get; init; }
     }
 }

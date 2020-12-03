@@ -1,10 +1,8 @@
-﻿using System.Globalization;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using Models.Models;
 
-namespace SharedModels.Models
+namespace Models
 {
     /// <summary>
     /// Store word properties.

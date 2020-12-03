@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Models.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Text.Json.Serialization;
 
-namespace SharedModels.Models
+namespace Models
 {
     public class User : IdentityUser
     {

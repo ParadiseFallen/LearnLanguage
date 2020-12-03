@@ -1,13 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
-using System.Text;
 using System.Text.Json.Serialization;
 
-namespace SharedModels.Models
+namespace Models
 {
     [Index("Username",IsUnique =true)]
     public class Login
