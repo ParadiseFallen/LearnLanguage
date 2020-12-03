@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Models.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

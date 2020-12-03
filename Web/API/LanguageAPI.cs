@@ -1,17 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.Models;
-using System;
+using Models;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using Web.Services;
 
 namespace Web.API
 {
     [Route("/api/language")]
-    [Authorize(AuthenticationSchemes = "Identity.Application", Roles = "User")]
+    [Authorize(AuthenticationSchemes = "Identity.Application")]
     public class LanguageAPI : Controller
     {
         private LanguageService Service { get; }
@@ -49,6 +47,6 @@ namespace Web.API
             return Conflict("Language not exist.");
         }
         //[Route("/Error")]
-        //public async Task<APIResponse<Language>> Error()=>
+        //public async Task<ApiResponse<Language>> Error()=>
     }
 }

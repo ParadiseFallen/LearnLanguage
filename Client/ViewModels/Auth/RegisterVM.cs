@@ -5,7 +5,7 @@ using ReactiveUI.Validation.Abstractions;
 using ReactiveUI.Validation.Contexts;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
-using SharedModels.Models;
+using Models;
 using Splat;
 using System;
 using System.Collections.Generic;

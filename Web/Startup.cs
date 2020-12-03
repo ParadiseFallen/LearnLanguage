@@ -15,11 +15,14 @@ using Web.Data;
 using Web.Models;
 using Web.Services;
 using System.Text.Json;
-using SharedModels.Models;
+using Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.Net;
 
 namespace Web
 {
@@ -43,16 +46,8 @@ namespace Web
                 options.EnableSensitiveDataLogging(true);
             });
 
-            services.AddAuthorization(options => { });
-            services.AddAuthentication(options => { })
-                .AddCookie(cookie =>
-                {
-                    cookie.Events.DisableRedirectForPath(e => e.OnRedirectToLogin,
-                    "/api", StatusCodes.Status401Unauthorized);
-                    cookie.Events.DisableRedirectForPath(e =>
-                    e.OnRedirectToAccessDenied,
-                    "/api", StatusCodes.Status403Forbidden);
-                });
+            services.AddAuthorization();
+            services.AddAuthentication();
 
             services.AddIdentity<User, IdentityRole>(options =>
             {
@@ -65,10 +60,21 @@ namespace Web
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(10);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
+
             })
                 .AddEntityFrameworkStores<DatabaseContext>();
 
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Events.DisableRedirectForPath(e => e.OnRedirectToLogin,
+                "/api", StatusCodes.Status401Unauthorized);
+                config.Events.DisableRedirectForPath(e =>
+                e.OnRedirectToAccessDenied,
+                "/api", StatusCodes.Status403Forbidden);
+            });
+
             services.AddServerSideBlazor();
+
             services.AddRazorPages()
                 .AddJsonOptions(opt => opt.JsonSerializerOptions.AddAllConverters());
 
@@ -93,16 +99,16 @@ namespace Web
             }
             else
             {
-                //app.UseExceptionHandler("/Error");
-                //app.UseHsts();
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
             app.UseAuthentication();
-
 
             app.UseEndpoints(endpoints =>
             {

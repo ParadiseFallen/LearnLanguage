@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SharedModels.Models;
-using System;
+using Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Web.Models;
-using Web.Services;
 
 namespace Web.Services
 {
@@ -20,10 +17,9 @@ namespace Web.Services
         }
 
 
-        public async Task<bool> LoginAsync(Login login)
+        public async Task<SignInResult> LoginAsync(Login login)
         {
-            SignInResult result = await SigninManager.PasswordSignInAsync(login.Username, login.Password, false, false);
-            return result.Succeeded;
+            return await SigninManager.PasswordSignInAsync(login.Username, login.Password, false, false);
         }
         public async Task LogoutAsync()
         {

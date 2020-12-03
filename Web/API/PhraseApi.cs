@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SharedModels.Models;
+using Models;
 using System;
 using System.Globalization;
 using System.Linq;

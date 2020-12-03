@@ -19,9 +19,6 @@
 		<PackageReference Include="ReactiveUI.Validation" Version="1.8.6" />
 	</ItemGroup>
 	<!--reference packages-->
-	<ItemGroup>
-		<ProjectReference Include="..\SharedModels\Models.csproj" />
-	</ItemGroup>
     <!--avalonia resx-->
 	<ItemGroup>
 		<AvaloniaResource Include="Assets\**" />
@@ -37,6 +34,10 @@
 	<ItemGroup>
 		<AvaloniaResource Include="Styles\DebugStyle.axaml" />
 		<AvaloniaResource Include="Styles\DefaultTheme.axaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\ApiServices\ApiServices.csproj" />
+	  <ProjectReference Include="..\Models\Models.csproj" />
 	</ItemGroup>
 	<!--<ItemGroup>
     <AvaloniaXaml Update="Views\Auth\Login.axaml">

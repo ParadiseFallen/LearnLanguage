@@ -1,18 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using SharedModels.Models;
-using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Web.Models;
 using Web.Services;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
+using Models;
 
 namespace Web.API
 {
@@ -29,9 +20,11 @@ namespace Web.API
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] Login data)
         {
-            if (await Service.LoginAsync(data))
-                return Ok();
-            return Unauthorized("Wrong login or password");
+
+            return null;
+            //if (await Service.LoginAsync(data))
+            //    return Ok();
+            //return Unauthorized("Wrong login or password");
         }
 
         [HttpPost("register")]

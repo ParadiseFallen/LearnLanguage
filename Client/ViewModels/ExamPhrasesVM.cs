@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using SharedModels.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
