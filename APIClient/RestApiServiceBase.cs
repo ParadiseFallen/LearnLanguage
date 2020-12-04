@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -22,6 +23,9 @@ namespace ApiClient
 
         protected async Task<HttpResponseMessage> GetAsync(string uri) => 
             await RestClient.GetAsync(uri);
+
+        protected Request<T> CreateRequest<T>(Task<HttpResponseMessage> requestMethod) => 
+            new Request<T>(requestMethod,SerializerOptions);
 
         protected async Task<HttpResponseMessage> PostAsync<T>(string uri, T data) => 
             await RestClient.PostAsJsonAsync(uri,data, SerializerOptions);
@@ -51,7 +55,7 @@ namespace ApiClient
             reciveHandler ??= new Func<HttpResponseMessage, Task<T>>(
                 response => 
                     response.Content.ReadFromJsonAsync<T>(SerializerOptions));
-            exceptionHandler ??= new Func<Exception, Task<T>>(exception => null);
+            exceptionHandler ??= new Func<Exception, Task<T>>(async exception => default);
 
             try
             {
