@@ -17,23 +17,36 @@ namespace Web.Services
         }
         #endregion
 
-        public async Task<Language> CreateLanguage(Language language)
+        public async Task<ApiResponse<Language>> CreateLanguage(Language language)
         {
             Language created = null;
-            if (Database.Languages.Where(l=>l.CultureInfo==language.CultureInfo).Count() == 0) //no language with this locale
+            if (Database.Languages.Where(l => l.CultureInfo == language.CultureInfo).Count() == 0) //no language with this locale
                 created = (await Database.AddAsync(language)).Entity;
             await Database.SaveChangesAsync();
-            return created;
+            if (created != null)
+                return new ApiResponse<Language>() { Content = created };
+            return new ApiResponse<Language>() { Errors = new[] { "Language exist." } };
         }
-        public async Task<Language> GetLanguage(CultureInfo cultureInfo) =>
-            Database.Languages.Where(l => l.CultureInfo == cultureInfo).FirstOrDefault();
-        public async Task<IEnumerable<Language>> GetAllLanguages()=>
-             Database.Languages.OrderBy(x=>x.Name).ToList();
-        public async Task<Language> UpdateLanguage(Language language)
+        public async Task<ApiResponse<Language>> GetLanguage(CultureInfo cultureInfo)
         {
-            language =  Database.Update(language).Entity;
+            var lang = Database.Languages.Where(l => l.CultureInfo == cultureInfo).FirstOrDefault();
+            if (lang != null)
+            {
+                return new ApiResponse<Language> { Content = lang };
+            }
+            return new ApiResponse<Language>() { Errors = new[] { "Language dosent exist." } };
+        }
+        public async Task<ApiResponse<IEnumerable<Language>>> GetAllLanguages() => 
+            new ApiResponse<IEnumerable<Language>>()
+            { 
+                Content = Database.Languages.OrderBy(x => x.Name).ToList() 
+            };
+
+        public async Task<ApiResponse<Language>> UpdateLanguage(Language language)
+        {
+            language = Database.Update(language).Entity;
             await Database.SaveChangesAsync();
-            return language;
+            return new ApiResponse<Language>() { Content = language};
         }
         public async Task<bool> DeleteLanguage(int languageID)
         {

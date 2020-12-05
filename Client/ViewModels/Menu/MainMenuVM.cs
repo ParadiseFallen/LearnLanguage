@@ -62,32 +62,34 @@ namespace Client.ViewModels
         public async void Init()
         {
             //init avalible languages
-            //Languages = new AvaloniaList<Language>(await APIService.GetLanguages());
+            var languageApiResponse = await APIService.GetLanguages();
+            Languages = new AvaloniaList<Language>(languageApiResponse.Content);
 
-            //Exit = ReactiveCommand.Create(() => { Environment.Exit(0); });
-            //Acount = ReactiveCommand.Create(() => 
-            //{
-            //    var cfgSer = Locator.Current.GetService<ILocalSettingsService>();
-            //    cfgSer.Config.AuthToken = null;
-            //    cfgSer.Save();
-            //    HostScreen.Router.NavigateAndReset.Execute(new AuthVM(HostScreen)); 
-            //});
+            Exit = ReactiveCommand.Create(() => { Environment.Exit(0); });
+            Acount = ReactiveCommand.Create(() =>
+            {
+                var cfgSer = Locator.Current.GetService<ILocalSettingsService>();
+                cfgSer.Config.AuthToken = null;
+                cfgSer.Save();
+                HostScreen.Router.NavigateAndReset.Execute(new AuthVM(HostScreen));
+            });
 
-            //Learn = ReactiveCommand.CreateFromTask(async () =>
-            //{
-            //    await HostScreen.Router.Navigate.Execute(
-            //        new LearnPhrasesVM(HostScreen, await TranslationService.GetRandomTranslations(
-            //            FromLanguageSelected.CultureInfo,
-            //            ToLanguageSelected.CultureInfo,
-            //            5)) //todo remove count and from
-            //        );
-            //},
-            //canExecute: this
-            //.WhenAnyValue(
-            //    vm => vm.FromLanguageSelected,
-            //    vm => vm.ToLanguageSelected, (from, to) => from != null && to != null && from != to));
-            
-            
+            Learn = ReactiveCommand.CreateFromTask(async () =>
+            {
+                var translationApiResponse = await TranslationService.GetRandomTranslations(
+                        FromLanguageSelected.CultureInfo,
+                        ToLanguageSelected.CultureInfo,
+                        5);
+                await HostScreen.Router.Navigate.Execute(
+                    new LearnPhrasesVM(HostScreen, translationApiResponse.Content) //todo remove count and from
+                    );
+            },
+            canExecute: this
+            .WhenAnyValue(
+                vm => vm.FromLanguageSelected,
+                vm => vm.ToLanguageSelected, (from, to) => from != null && to != null && from != to));
+
+
         }
 
 
