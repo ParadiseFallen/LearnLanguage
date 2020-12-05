@@ -1,5 +1,4 @@
-﻿using Models.Services.API;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Abstractions;
 using ReactiveUI.Validation.Contexts;
@@ -14,6 +13,8 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ApiServices.ServicesInterfaces;
+using System.Linq;
 
 namespace Client.ViewModels
 {
@@ -37,7 +38,7 @@ namespace Client.ViewModels
         public string Email { get; set; }
         [Reactive]
         public string Errors { get; set; }
-        private AccountAPIService Account { get; }
+        private IAccountService Account { get; }
 
         #endregion
 
@@ -61,7 +62,7 @@ namespace Client.ViewModels
         {
             #region ctor
             HostScreen = hostScreen;
-            Account = Locator.Current.GetService<AccountAPIService>();
+            Account = Locator.Current.GetService<IAccountService>();
             #endregion
 
             #region Validation
@@ -108,10 +109,14 @@ namespace Client.ViewModels
                         Email = Email,
                         Culture = new System.Globalization.CultureInfo("en-EN")
                     });
-                    if (string.IsNullOrEmpty(result)) //succses
-                        await hostScreen.Router.NavigateAndReset.Execute(new LoginVM(HostScreen) {Username = Username });
+                    if (result.Content)
+                    {
+                        await hostScreen.Router.NavigateAndReset.Execute(new LoginVM(HostScreen) { Username = Username });
+                    }
                     else
-                        Errors = result;
+                    {
+                        Errors = result.Errors.FirstOrDefault();
+                    }
                 },
                 canExecute: canRegister);
 

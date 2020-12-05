@@ -1,22 +1,16 @@
-﻿using Models.Services.API;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using ReactiveUI.Validation.Abstractions;
-using ReactiveUI.Validation.Contexts;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
-using SharedModels.Models;
+using Models;
 using Splat;
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reactive.Linq;
-using System.Diagnostics;
-using System.Configuration;
 using Client.Services;
+using ApiServices.ServicesInterfaces;
+using ApiServices.Extensions;
 
 namespace Client.ViewModels
 {
@@ -28,7 +22,7 @@ namespace Client.ViewModels
         #endregion
 
         #region Props
-        private AccountAPIService Account { get; }
+        private IAccountService Account { get; }
         private ILocalSettingsService ConfigProvider { get; }
         [Reactive]
         public string Username { get; set; }
@@ -41,7 +35,7 @@ namespace Client.ViewModels
         #endregion
 
         #region Commands
-        public ReactiveCommand<Unit,string> Login { get; private set; }
+        public ReactiveCommand<Unit,ApiResponse<UserInfo>> Login { get; private set; }
         public IReactiveCommand Register { get; private set; }
 
         #endregion
@@ -59,7 +53,7 @@ namespace Client.ViewModels
         {
             #region Base init
             HostScreen = Host;
-            Account = Locator.Current.GetService<AccountAPIService>();
+            Account = Locator.Current.GetService<IAccountService>();
             ConfigProvider = Locator.Current.GetService<ILocalSettingsService>();
             Username = ConfigProvider.Config.Username;
             #endregion
@@ -77,15 +71,12 @@ namespace Client.ViewModels
             #endregion
 
             #region Commands
-            Login = ReactiveCommand.CreateFromTask<Unit,string>(
-            async _ =>
+            Login = ReactiveCommand.CreateFromTask<Unit,ApiResponse<UserInfo>>(
+            async _ => await Account.Login(new Login()
             {
-                return await Account.Login(new Login()
-                {
                     Username = this.Username,
                     Password = this.Password
-                });
-            },
+            }),
             canExecute: 
             this.WhenAnyValue(
                 vm => vm.Password,
@@ -93,19 +84,22 @@ namespace Client.ViewModels
                 (p, u) => !string.IsNullOrEmpty(p) && !string.IsNullOrEmpty(u)));
 
             //when login completed
-            Login.Subscribe(x => 
+            Login.Subscribe(async apiResponse => 
             {
-                Status = x;
-                if (RememberMe && string.IsNullOrEmpty(Status))
+                if (apiResponse.Content != null)
                 {
-                    ConfigProvider.Config.Username = Username;
-                    ConfigProvider.Config.AuthToken = Account.Http.AuthToken;
-                    ConfigProvider.Save();
-                }
-                if (string.IsNullOrEmpty(Status))
-                {
+                    if (RememberMe)
+                    {
+                        ConfigProvider.Config.Username = Username;
+                        ConfigProvider.Config.AuthToken = Account.RestClient.GetAuthCookie();
+                        ConfigProvider.Save();
+                    }
                     var main = HostScreen as AuthVM;
-                    main.HostScreen.Router.Navigate.Execute(new MainMenuVM(HostScreen));
+                    await main.HostScreen.Router.Navigate.Execute(new MainMenuVM(HostScreen));
+                }
+                else
+                {
+                    Status = apiResponse.Errors.FirstOrDefault();
                 }
             });
 
