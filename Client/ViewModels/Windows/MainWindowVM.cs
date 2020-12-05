@@ -1,5 +1,8 @@
-﻿using Client.Services;
-using Models.Services.API;
+﻿using ApiClient;
+using ApiServices.Extensions;
+using ApiServices.Services;
+using ApiServices.ServicesInterfaces;
+using Client.Services;
 using ReactiveUI;
 using Splat;
 using System;
@@ -24,16 +27,13 @@ namespace Client.ViewModels
 
         private async void Init()
         {
-            //this.Router.Navigate.Execute(new MainMenuVM(this));
-            //return;
-            var client = Locator.Current.GetService<HttpApiClient>();
-            var canAccesApiTask = await client.IsActive();
+            var isAvailable = await Locator.Current.GetService<ApiService>().IsApiAvailable();
             var token = ConfigService.Config.AuthToken;
-            if (string.IsNullOrEmpty(token)|| !canAccesApiTask)
+            if (string.IsNullOrEmpty(token)|| !isAvailable)
                 this.Router.Navigate.Execute(new AuthVM(this));
             else
             {
-                Locator.Current.GetService<HttpApiClient>().AuthToken = token;
+                Locator.Current.GetService<IAccountService>().RestClient.SetAuthCookie(token);
                 this.Router.Navigate.Execute(new MainMenuVM(this));
             }
         }

@@ -1,18 +1,16 @@
 ﻿using ReactiveUI;
 using System;
 using Avalonia;
-using Models.Models;
+using Models;
 using ReactiveUI.Fody.Helpers;
 using DynamicData;
 using Avalonia.Collections;
-using Models.Services;
 using Splat;
-using SharedModels.Models;
 using Avalonia.Media.Imaging;
 using System.IO;
-using Models.Services.API;
 using System.Reactive.Linq;
 using Client.Services;
+using ApiServices.ServicesInterfaces;
 
 namespace Client.ViewModels
 {
@@ -42,8 +40,8 @@ namespace Client.ViewModels
         #endregion
 
         #region PrivateProps
-        private LanguageAPIService APIService { get; init; }
-        private TranslateAPIService TranslationService { get; init; }
+        private ILanguageService APIService { get; init; }
+        private ITranslationService TranslationService { get; init; }
 
         #endregion
 
@@ -55,8 +53,8 @@ namespace Client.ViewModels
         {
             HostScreen = hostScreen;
             //resolving
-            APIService = Locator.Current.GetService<LanguageAPIService>();
-            TranslationService = Locator.Current.GetService<TranslateAPIService>();
+            APIService = Locator.Current.GetService<ILanguageService>();
+            TranslationService = Locator.Current.GetService<ITranslationService>();
 
             Init();
         }
@@ -64,30 +62,30 @@ namespace Client.ViewModels
         public async void Init()
         {
             //init avalible languages
-            Languages = new AvaloniaList<Language>(await APIService.GetLanguages());
+            //Languages = new AvaloniaList<Language>(await APIService.GetLanguages());
 
-            Exit = ReactiveCommand.Create(() => { Environment.Exit(0); });
-            Acount = ReactiveCommand.Create(() => 
-            {
-                var cfgSer = Locator.Current.GetService<ILocalSettingsService>();
-                cfgSer.Config.AuthToken = null;
-                cfgSer.Save();
-                HostScreen.Router.NavigateAndReset.Execute(new AuthVM(HostScreen)); 
-            });
+            //Exit = ReactiveCommand.Create(() => { Environment.Exit(0); });
+            //Acount = ReactiveCommand.Create(() => 
+            //{
+            //    var cfgSer = Locator.Current.GetService<ILocalSettingsService>();
+            //    cfgSer.Config.AuthToken = null;
+            //    cfgSer.Save();
+            //    HostScreen.Router.NavigateAndReset.Execute(new AuthVM(HostScreen)); 
+            //});
 
-            Learn = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await HostScreen.Router.Navigate.Execute(
-                    new LearnPhrasesVM(HostScreen, await TranslationService.GetRandomTranslations(
-                        FromLanguageSelected.CultureInfo,
-                        ToLanguageSelected.CultureInfo,
-                        5)) //todo remove count and from
-                    );
-            },
-            canExecute: this
-            .WhenAnyValue(
-                vm => vm.FromLanguageSelected,
-                vm => vm.ToLanguageSelected, (from, to) => from != null && to != null && from != to));
+            //Learn = ReactiveCommand.CreateFromTask(async () =>
+            //{
+            //    await HostScreen.Router.Navigate.Execute(
+            //        new LearnPhrasesVM(HostScreen, await TranslationService.GetRandomTranslations(
+            //            FromLanguageSelected.CultureInfo,
+            //            ToLanguageSelected.CultureInfo,
+            //            5)) //todo remove count and from
+            //        );
+            //},
+            //canExecute: this
+            //.WhenAnyValue(
+            //    vm => vm.FromLanguageSelected,
+            //    vm => vm.ToLanguageSelected, (from, to) => from != null && to != null && from != to));
             
             
         }
