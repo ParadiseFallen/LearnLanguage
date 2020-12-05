@@ -7,6 +7,7 @@ namespace ApiServices.ServicesInterfaces
 {
     public interface ITranslationService
     {
-        Task<ApiResponse<IEnumerable<Translation>>> GetRandomTranslations(CultureInfo from, CultureInfo to, int count = 1);
+        public Task<ApiResponse<IEnumerable<Translation>>> GetRandomTranslations
+            (CultureInfo from, CultureInfo to, int count = 1);
     }
 }

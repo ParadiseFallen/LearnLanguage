@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using ApiClient;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,9 @@ namespace ApiServices.ServicesInterfaces
 {
     public interface IAccountService
     {
-        Task<ApiResponse<User>> Login(Login login);
-        Task<ApiResponse<bool>> Logout();
-        Task<ApiResponse<User>> Register(Login login);
+        public RestClient RestClient { get; }
+        public Task<ApiResponse<UserInfo>> Login(Login login);
+        public Task<ApiResponse<bool>> Logout();
+        public Task<ApiResponse<bool>> Register(Login login);
     }
 }

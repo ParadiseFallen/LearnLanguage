@@ -10,7 +10,7 @@ namespace ApiServices.ServicesInterfaces
 {
     public interface ILanguageService
     {
-        Task<ApiResponse<Language>> GetLanguage(CultureInfo cultureInfo);
-        Task<ApiResponse<IEnumerable<Language>>> GetLanguages();
+        public Task<ApiResponse<Language>> GetLanguage(CultureInfo cultureInfo);
+        public Task<ApiResponse<IEnumerable<Language>>> GetLanguages();
     }
 }
