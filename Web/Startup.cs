@@ -76,7 +76,12 @@ namespace Web
             services.AddServerSideBlazor();
 
             services.AddRazorPages()
-                .AddJsonOptions(opt => opt.JsonSerializerOptions.AddAllConverters());
+                .AddJsonOptions(opt => 
+                {
+                    opt.JsonSerializerOptions.AddAllConverters();
+                });
+
+            services.AddHttpContextAccessor();
 
             #region register services
             services.AddSingleton<WeatherForecastService>(); //REMOVE

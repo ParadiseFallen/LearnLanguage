@@ -3,10 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SharedModels.Models;
+using Models;
 using System.Globalization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Models.Models;
 using System.Drawing;
 using System.IO;
 

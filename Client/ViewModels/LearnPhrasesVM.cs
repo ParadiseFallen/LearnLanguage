@@ -1,11 +1,9 @@
 ﻿using Client.Models;
 using Client.Services;
 using DynamicData;
-using Models.Models;
-using Models.Services.API;
+using Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using SharedModels.Models;
 using Splat;
 using System;
 using System.Collections.Generic;
