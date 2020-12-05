@@ -6,7 +6,6 @@ namespace Models
 {
     public class User : IdentityUser
     {
-        [JsonPropertyName("nativeCulture")]
         [Required]
         public Language NativeCulture { get; set; }
     }

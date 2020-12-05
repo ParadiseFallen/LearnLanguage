@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -9,13 +10,12 @@ namespace Models
     /// <remarks>
     /// Immuteble data.
     /// </remarks>
-    public record ApiResponse<T>
+    public record ApiResponse<T> 
     {
-        public ApiResponse(IEnumerable<string> errors = null, T content = default) => 
+        public ApiResponse(){}
+        public ApiResponse(IEnumerable<string> errors, T content) => 
             (Errors, Content) = (errors, content);
-
         public IEnumerable<string> Errors { get; init; }
-
         public T Content { get; init; }
     }
 }
