@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Models;
 using System.Globalization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Drawing;
 using System.IO;
+using Models;
 
 namespace Web.Models
 {

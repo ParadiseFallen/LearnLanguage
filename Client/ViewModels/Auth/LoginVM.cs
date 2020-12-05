@@ -91,7 +91,7 @@ namespace Client.ViewModels
                     if (RememberMe)
                     {
                         ConfigProvider.Config.Username = Username;
-                        ConfigProvider.Config.AuthToken = Account.RestClient.GetAuthCookie();
+                        ConfigProvider.Config.AuthToken = Account.AuthCookie;
                         ConfigProvider.Save();
                     }
                     var main = HostScreen as AuthVM;

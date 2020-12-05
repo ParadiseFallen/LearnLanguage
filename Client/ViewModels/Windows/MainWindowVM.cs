@@ -33,7 +33,7 @@ namespace Client.ViewModels
                 this.Router.Navigate.Execute(new AuthVM(this));
             else
             {
-                Locator.Current.GetService<IAccountService>().RestClient.SetAuthCookie(token);
+                Locator.Current.GetService<IAccountService>().AuthCookie = token;
                 this.Router.Navigate.Execute(new MainMenuVM(this));
             }
         }

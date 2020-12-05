@@ -14,5 +14,6 @@ namespace ApiServices.ServicesInterfaces
         public Task<ApiResponse<UserInfo>> Login(Login login);
         public Task<ApiResponse<bool>> Logout();
         public Task<ApiResponse<bool>> Register(Login login);
+        public string AuthCookie { get; set; }
     }
 }

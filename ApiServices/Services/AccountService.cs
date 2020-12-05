@@ -4,6 +4,7 @@ using ApiServices.ServicesInterfaces;
 using Models;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -15,6 +16,12 @@ namespace ApiServices.Services
     {
         public AccountService(RestClient restClient) : base(restClient) { }
 
+        public static string AuthCookieName { get; set; } = ".AspNetCore.Identity.Application";
+        public string AuthCookie
+        {
+            get => RestClient.Cookies.GetCookies(RestClient.BaseAddress)[AuthCookieName].Value;
+            set => RestClient.Cookies.Add(new Cookie(AuthCookieName, value, "/", RestClient.BaseAddress.Host));
+        }
 
         private Func<Exception, Task<ApiResponse<UserInfo>>> ExceptionHandlerUserInfo =>
             new Func<Exception, Task<ApiResponse<UserInfo>>>(async ex =>

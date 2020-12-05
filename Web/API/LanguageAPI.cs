@@ -46,7 +46,5 @@ namespace Web.API
                 return Ok();
             return Conflict("Language not exist.");
         }
-        //[Route("/Error")]
-        //public async Task<ApiResponse<Language>> Error()=>
     }
 }
