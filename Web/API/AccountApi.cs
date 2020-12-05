@@ -17,29 +17,20 @@ namespace Web.API
         }
 
         [HttpPost("login")]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromBody] Login data)
-        {
-
-            return null;
-            //if (await Service.LoginAsync(data))
-            //    return Ok();
-            //return Unauthorized("Wrong login or password");
-        }
+        public async Task<ApiResponse<UserInfo>> Login([FromBody] Login data)=>
+             await Service.LoginAsync(data);
 
         [HttpPost("register")]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromBody] Login data)
         {
             var errorList = await Service.RegisterAsync(data);
             if (errorList != null)
-                return Conflict(errorList.Select(x => x.Description));
-            return Ok();
+                return Conflict(new ApiResponse<object>() {Errors= errorList.Select(x => x.Description) });
+            return Ok(new ApiResponse<object>() { });
         }
 
         [Authorize(AuthenticationSchemes = "Identity.Application")]
         [HttpPost("logout")]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await Service.LogoutAsync();
