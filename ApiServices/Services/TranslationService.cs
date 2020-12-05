@@ -17,6 +17,7 @@ namespace ApiServices.Services
 
         public Task<ApiResponse<IEnumerable<Translation>>> GetRandomTranslations
             (CultureInfo from, CultureInfo to, int count = 1) =>
-            ExecuteRequestAsync<ApiResponse<IEnumerable<Translation>>>(GetAsync(Api.Translation.CompileGetTranslations(from,to,count)));
+            CreateRequest<ApiResponse<IEnumerable<Translation>>>(GetAsync(Api.Translation.CompileGetTranslations(from, to, count)))
+            .ExecuteRequestAsync();
     }
 }

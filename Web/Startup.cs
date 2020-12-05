@@ -1,16 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Models.JsonConverters;
 using Web.Data;
 using Web.Models;
 using Web.Services;
@@ -18,11 +12,7 @@ using System.Text.Json;
 using Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Net.Http.Json;
 using Microsoft.AspNetCore.Http;
-using System.Diagnostics;
-using Microsoft.AspNetCore.ResponseCompression;
-using System.Net;
 
 namespace Web
 {
@@ -46,8 +36,14 @@ namespace Web
                 options.EnableSensitiveDataLogging(true);
             });
 
-            services.AddAuthorization();
-            services.AddAuthentication();
+            services.AddAuthorizationCore(options => 
+            {
+                //options.AddPolicy()
+                options.AddPolicy("Admin",policy=>policy.RequireRole("Admin"));
+                options.AddPolicy("Moderator", policy => policy.RequireAssertion(context=>context.User.IsInRole("Moderator")));
+
+            });
+            services.AddAuthorizationCore();
 
             services.AddIdentity<User, IdentityRole>(options =>
             {

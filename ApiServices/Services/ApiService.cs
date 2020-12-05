@@ -14,9 +14,10 @@ namespace ApiServices.Services
         {
         }
 
-        public async Task<bool> IsApiAvailable() => await ExecuteRequestAsync(
-            GetAsync(Api.ApiBase),
-            async x => x.IsSuccessStatusCode,
-            async ex => false);
+        public async Task<bool> IsApiAvailable() =>
+            await CreateRequest<bool>(GetAsync(Api.ApiBase))
+            .SetExceptionHandler(async ex => false)
+            .SetResponseHandler(async response => response.IsSuccessStatusCode)
+            .ExecuteRequestAsync();
     }
 }

@@ -18,9 +18,11 @@ namespace ApiServices.Services
         }
 
         public Task<ApiResponse<Language>> GetLanguage(CultureInfo cultureInfo) =>
-            ExecuteRequestAsync<ApiResponse<Language>>(GetAsync(Api.Language.CompileGetLanguage(cultureInfo)));
+            CreateRequest<ApiResponse<Language>>(GetAsync(Api.Language.CompileGetLanguage(cultureInfo)))
+            .ExecuteRequestAsync();
 
         public Task<ApiResponse<IEnumerable<Language>>> GetLanguages() =>
-            ExecuteRequestAsync<ApiResponse<IEnumerable<Language>>>(GetAsync(Api.Language.AllLanguages));
+            CreateRequest<ApiResponse<IEnumerable<Language>>>(GetAsync(Api.Language.AllLanguages))
+            .ExecuteRequestAsync();
     }
 }

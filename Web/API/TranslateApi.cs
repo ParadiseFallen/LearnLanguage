@@ -30,7 +30,7 @@ namespace Web.API
 
 
         [HttpGet("{from}/{to}/{count:int=1}")]
-        public async Task<IEnumerable<Translation>> GetRandomTranslations
+        public async Task<ApiResponse<IEnumerable<Translation>>> GetRandomTranslations
             ([FromRoute] CultureInfo from, [FromRoute] CultureInfo to, int count) =>
             await TranslationService.GetRandomTranslationsAsync(from, to, count);
 
@@ -43,15 +43,15 @@ namespace Web.API
         }
 
         [HttpPut]
-        public async Task<Translation> UpdateTranslation([FromBody] Translation translation) =>
+        public async Task<ApiResponse<Translation>> UpdateTranslation([FromBody] Translation translation) =>
             await TranslationService.UpdateTranslationAsync(translation);
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTranslation(int id)
         {
             if (await TranslationService.DeleteTranslationAsync(id))
-                return Ok();
-            return Conflict();
+                return Ok(new ApiResponse<object>());
+            return Conflict(new ApiResponse<object>());
         }
     }
 }

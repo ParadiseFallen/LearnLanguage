@@ -34,7 +34,7 @@ namespace Web.Services
         //        return t;
         //    });
 
-        public async Task<IEnumerable<Translation>> GetRandomTranslationsAsync
+        public async Task<ApiResponse<IEnumerable<Translation>>> GetRandomTranslationsAsync
             (CultureInfo targetCulture, CultureInfo referenceCulture,  int count)
         {
             var random = new Random();
@@ -44,7 +44,7 @@ namespace Web.Services
                 t.B.Culture.CultureInfo.Equals(referenceCulture) && t.A.Culture.CultureInfo.Equals(targetCulture))
                                 .OrderBy(r => random.Next()); //shuffle
             var countToTake = count < filtered.Count() ? count : filtered.Count();
-            return filtered.Take(countToTake).ToList().Select(t=> 
+            var mappedTranslations =  filtered.Take(countToTake).ToList().Select(t=> 
             {
                 if (t.B.Culture.CultureInfo.Equals(referenceCulture) && t.A.Culture.CultureInfo.Equals(targetCulture))
                 {
@@ -54,6 +54,7 @@ namespace Web.Services
                 }
                 return t;
             });
+            return new ApiResponse<IEnumerable<Translation>>() { Content = mappedTranslations };
         }
 
         //public async Task<Translation> GetRandomTranslationAsync(CultureInfo referenceCulture, CultureInfo targetCulture) => 
@@ -62,11 +63,11 @@ namespace Web.Services
         #endregion
 
         #region Update
-        public async Task<Translation> UpdateTranslationAsync(Translation translation)
+        public async Task<ApiResponse<Translation>> UpdateTranslationAsync(Translation translation)
         {
             translation = Database.Translations.Update(translation).Entity;
             await Database.SaveChangesAsync();
-            return translation;
+            return new ApiResponse<Translation>() { Content= translation };
         }
         #endregion
 
