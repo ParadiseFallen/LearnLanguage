@@ -24,8 +24,8 @@ namespace ApiClient
         protected async Task<HttpResponseMessage> GetAsync(string uri) => 
             await RestClient.GetAsync(uri);
 
-        protected Request<T> CreateRequest<T>(Task<HttpResponseMessage> requestMethod) => 
-            new Request<T>(requestMethod,SerializerOptions);
+        protected virtual Request<RESPONSE_DATA_TYPE> CreateRequest<RESPONSE_DATA_TYPE>(Task<HttpResponseMessage> requestMethod) => 
+            new Request<RESPONSE_DATA_TYPE>(requestMethod,SerializerOptions);
 
         protected async Task<HttpResponseMessage> PostAsync<T>(string uri, T data) => 
             await RestClient.PostAsJsonAsync(uri,data, SerializerOptions);
@@ -47,6 +47,7 @@ namespace ApiClient
         /// <param name="reciveHandler">Handler for recived HttpResponseMessage. Read <see cref="T"/> from <see cref="HttpResponseMessage.Content"/> <c>response.Content.ReadFromJsonAsync<T>(SerializerOptions)</c> </param>
         /// <param name="exceptionHandler">Handler for exception. Suppresses by default and return null</param>
         /// <returns><see cref="T"/></returns>
+        [Obsolete("Obsolete method. Use CreateRequest<T>() and pipeline instead.")]
         protected virtual async Task<T> ExecuteRequestAsync<T>(
             Task<HttpResponseMessage> requestMethod,
             Func<HttpResponseMessage, Task<T>> reciveHandler = null,

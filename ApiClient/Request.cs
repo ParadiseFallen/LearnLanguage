@@ -24,8 +24,8 @@ namespace ApiClient
             RequestMethod = request;
 
             OnSuccses = new Func<HttpResponseMessage, Task<T>>(
-                response => 
-                    response.Content.ReadFromJsonAsync<T>(SerializerOptions));
+                async response => 
+                    await response.Content.ReadFromJsonAsync<T>(SerializerOptions));
             OnException = new Func<Exception, Task<T>>(async exception => default);
         }
         #region Chain
