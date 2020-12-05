@@ -25,24 +25,24 @@ namespace Web.API
             PhraseService = phraseService;
         }
         [HttpPost]
-        public async Task<Phrase> UpdatePhraseAsync([FromBody]Phrase phrase)
-        {
-            phrase = await PhraseService.UpdatePhraseAsync(phrase);
-            return phrase;
-        }
+        public async Task<ApiResponse<Phrase>> UpdatePhraseAsync([FromBody]Phrase phrase) => 
+            await PhraseService.UpdatePhraseAsync(phrase);
+        
         [HttpPut]
         public async Task<IActionResult> CreatePhraseAsync([FromBody] Phrase phrase) 
         {
-            if (await PhraseService.CreatePhraseAsync(phrase))
-                return Ok();
-            return Conflict();
+            var response = await PhraseService.CreatePhraseAsync(phrase);
+            if (response.Errors.Count()==0)
+                return Ok(response);
+            return Conflict(response);
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeletePhraseAsync(int id)
         {
-            if (await PhraseService.DeletePhraseAsync(id))
-                return Ok();
-            return Conflict();
+            var response = await PhraseService.DeletePhraseAsync(id);
+            if (response.Errors.Count() == 0)
+                return Ok(response);
+            return Conflict(response);
         }
 
     }

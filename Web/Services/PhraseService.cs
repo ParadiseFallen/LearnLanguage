@@ -25,28 +25,28 @@ namespace Web.Services
         {
         }
 
-        public async Task<bool> CreatePhraseAsync(Phrase phrase)
+        public async Task<ApiResponse<object>> CreatePhraseAsync(Phrase phrase)
         {
-            if (Database.Phrases.Where(p => p.Text == phrase.Text).Count()!=0)
-                return false;
+            if (Database.Phrases.Where(p => p.Text == phrase.Text).Count() != 0)
+                return new ApiResponse<object>() { Errors = new[] { "Same phrase exist." } };
             Database.Add(phrase);
             await Database.SaveChangesAsync();
-            return true;
+            return new ApiResponse<object>();
         }
-        public async Task<bool> DeletePhraseAsync(int id)
+        public async Task<ApiResponse<object>> DeletePhraseAsync(int id)
         {
             var phrase = Database.Phrases.Where(p => p.Id == id).FirstOrDefault();
             if (phrase == default)
-                return false;
+                return new ApiResponse<object>() {Errors=new[] {"Phrase dosent exist." } };
             Database.Remove(phrase);
             await Database.SaveChangesAsync();
-            return true;
+            return new ApiResponse<object>();
         }
-        public async Task<Phrase> UpdatePhraseAsync(Phrase phrase) 
+        public async Task<ApiResponse<Phrase>> UpdatePhraseAsync(Phrase phrase)
         {
             phrase = Database.Update(phrase).Entity;
             await Database.SaveChangesAsync();
-            return phrase;
+            return new ApiResponse<Phrase>() { Content = phrase};
         }
     }
 }
