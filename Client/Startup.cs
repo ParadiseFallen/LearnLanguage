@@ -1,20 +1,18 @@
 ﻿using Avalonia;
-using Client.ViewModels;
-using Client.Views;
-using Models.Services.API;
 using ReactiveUI;
 using Splat;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Linq;
 using Client.Services;
-using System.Security.Cryptography;
-using Models.Services;
 using Client.Models;
 using CommandLine;
+using ApiClient;
+using ApiServices.ServicesInterfaces;
+using ApiServices.Services;
+using System.Net.Http;
 
 namespace Client
 {
@@ -29,6 +27,7 @@ namespace Client
         {
             var serializerOption = new JsonSerializerOptions();
             JsonExtension.GetAllConverters().ToList().ForEach(serializerOption.Converters.Add);
+            serializerOption.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 
             var cfgService = new LocalSettingsService()
             {
@@ -53,15 +52,33 @@ namespace Client
                 });
 
             Console.WriteLine(cfgService.Config.RestAPIAddres);
-            var http = new HttpApiClient(new Uri(cfgService.Config.RestAPIAddres));
+            var http = new RestClient(new HttpClientHandler()) {BaseAddress=new Uri(cfgService.Config.RestAPIAddres) };
+
+            #region register services
+
+            Locator.CurrentMutable.RegisterConstant(http, typeof(RestClient));
+
+            Locator.CurrentMutable.Register(
+                () => new AccountService(http) { SerializerOptions = serializerOption }, 
+                typeof(IAccountService));
+
+            Locator.CurrentMutable.Register(
+                () => new TranslationService(http) { SerializerOptions = serializerOption }, 
+                typeof(ITranslationService));
+
+            Locator.CurrentMutable.Register(
+                () => new LanguageService(http) { SerializerOptions = serializerOption }, 
+                typeof(ILanguageService));
+
+            Locator.CurrentMutable.Register(
+                () => new ApiService(http) { SerializerOptions = serializerOption },
+                typeof(ApiService));
+            
+            Locator.CurrentMutable.RegisterConstant(cfgService, typeof(ILocalSettingsService));
+
+            #endregion
 
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
-            Locator.CurrentMutable.RegisterConstant(http, typeof(HttpApiClient));
-            Locator.CurrentMutable.Register(() => new AccountAPIService(http, serializerOption), typeof(AccountAPIService));
-            Locator.CurrentMutable.Register(() => new TranslateAPIService(http, serializerOption), typeof(TranslateAPIService));
-            Locator.CurrentMutable.Register(() => new LanguageAPIService(http, serializerOption), typeof(LanguageAPIService));
-
-            Locator.CurrentMutable.RegisterConstant(cfgService, typeof(ILocalSettingsService));
 
             cfgService.Save();
             return builder;
