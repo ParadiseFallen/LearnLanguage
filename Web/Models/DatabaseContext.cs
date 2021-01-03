@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Globalization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Drawing;
 using System.IO;
 using Models;
+using Microsoft.AspNetCore.Identity;
+using System.Reflection;
 
 namespace Web.Models
 {
@@ -34,31 +32,9 @@ namespace Web.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder
-                .Entity<Language>()
-                .Property(e => e.CultureInfo)
-                .HasConversion(ci=>ci.Name,ci=>new CultureInfo(ci));
-            modelBuilder
-                .Entity<Language>()
-                .Property(e => e.Flag)
-                .HasConversion(x=>ImageToByte(x),x=> ByteToImage(x));
-        }
-        private static byte[] ImageToByte(Image img)
-        {
-            using (MemoryStream mStream = new MemoryStream())
-            {
-                img.Save(mStream, img.RawFormat);
-                return mStream.ToArray();
-            }
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        private static Image ByteToImage(byte[] data)
-        {
-            using (MemoryStream mStream = new MemoryStream(data))
-            {
-                return Image.FromStream(mStream);
-            }
-        }
+        
     }
 }

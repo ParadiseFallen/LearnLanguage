@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ApiClientBase" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\APIClient\ApiClient.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 

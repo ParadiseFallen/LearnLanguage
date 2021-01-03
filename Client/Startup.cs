@@ -28,7 +28,7 @@ namespace Client
             var serializerOption = new JsonSerializerOptions();
             JsonExtension.GetAllConverters().ToList().ForEach(serializerOption.Converters.Add);
             serializerOption.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-
+            
             var cfgService = new LocalSettingsService()
             {
                 Options = serializerOption,
@@ -42,8 +42,8 @@ namespace Client
                 }
             };
             cfgService.Load();
-            //test!
-            var startupArgs = Parser.Default.ParseArguments<StartupArgs>(args).WithParsed(
+            
+            Parser.Default.ParseArguments<StartupArgs>(args).WithParsed(
                 opt =>
                 {
                     cfgService.Config.RestAPIAddres = string.IsNullOrEmpty(opt.ServerAddres) ? cfgService.Config.RestAPIAddres : opt.ServerAddres;
@@ -53,31 +53,34 @@ namespace Client
 
             Console.WriteLine(cfgService.Config.RestAPIAddres);
             var http = new RestClient(new HttpClientHandler()) {BaseAddress=new Uri(cfgService.Config.RestAPIAddres) };
+            //setup default factory
+            ServiceFactory.Default.Client = http;
+            ServiceFactory.Default.SerializerOptions = serializerOption;
 
             #region register services
 
             Locator.CurrentMutable.RegisterConstant(http, typeof(RestClient));
 
             Locator.CurrentMutable.Register(
-                () => new AccountService(http) { SerializerOptions = serializerOption }, 
+                ServiceFactory.Default.CreateService<AccountService>, 
                 typeof(IAccountService));
 
             Locator.CurrentMutable.Register(
-                () => new TranslationService(http) { SerializerOptions = serializerOption }, 
+                ServiceFactory.Default.CreateService<TranslationService>, 
                 typeof(ITranslationService));
 
             Locator.CurrentMutable.Register(
-                () => new LanguageService(http) { SerializerOptions = serializerOption }, 
+                ServiceFactory.Default.CreateService<LanguageService>,
                 typeof(ILanguageService));
 
             Locator.CurrentMutable.Register(
-                () => new ApiService(http) { SerializerOptions = serializerOption },
+                ServiceFactory.Default.CreateService<ApiService>,
                 typeof(ApiService));
             
             Locator.CurrentMutable.RegisterConstant(cfgService, typeof(ILocalSettingsService));
 
             #endregion
-
+            
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
             cfgService.Save();

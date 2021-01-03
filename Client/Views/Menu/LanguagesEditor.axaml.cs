@@ -2,13 +2,13 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using Client.ViewModels;
+using Client.ViewModels.Menu;
 
 namespace Client.Views
 {
-    public class SelectAppLanguageView : ReactiveUserControl<SelectAppLanguageViewModel>
+    public class LanguagesEditor : ReactiveUserControl<LanguagesEditorVM>
     {
-        public SelectAppLanguageView()
+        public LanguagesEditor()
         {
             this.InitializeComponent();
         }

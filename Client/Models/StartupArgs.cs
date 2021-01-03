@@ -9,7 +9,7 @@ namespace Client.Models
 {
     public class StartupArgs
     {
-        [Option(longName: "APIserver", Required = false)]
+        [Option(longName: "ApiServer", Required = false)]
         public string ServerAddres { get; set; }
     }
 }

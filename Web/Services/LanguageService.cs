@@ -36,28 +36,37 @@ namespace Web.Services
             }
             return new ApiResponse<Language>() { Errors = new[] { "Language dosent exist." } };
         }
-        public async Task<ApiResponse<IEnumerable<Language>>> GetAllLanguages() => 
+        public async Task<ApiResponse<IEnumerable<Language>>> GetAllLanguages() =>
             new ApiResponse<IEnumerable<Language>>()
-            { 
-                Content = Database.Languages.OrderBy(x => x.Name).ToList() 
+            {
+                Content = Database.Languages.OrderBy(x => x.Name).ToList()
             };
 
         public async Task<ApiResponse<Language>> UpdateLanguage(Language language)
         {
-            language = Database.Update(language).Entity;
+            if (language == null)
+                return new ApiResponse<Language>() { Errors = new[] { "Unknown language." } };
+
+            var languageForUpdate = Database.Languages.Where(x => x.Id == language.Id).FirstOrDefault();
+            if (languageForUpdate == null)
+                return new ApiResponse<Language>() { Errors = new[] { $"Language with id:{language.Id} dosen't exist" } };
+
+            //update ONLY name & flag
+            languageForUpdate.Name = language.Name ?? languageForUpdate.Name;
+            languageForUpdate.Flag = language.Flag ?? languageForUpdate.Flag;
+
             await Database.SaveChangesAsync();
-            return new ApiResponse<Language>() { Content = language};
+            return new ApiResponse<Language>() { Content = languageForUpdate };
         }
         public async Task<bool> DeleteLanguage(int languageID)
         {
             var language = Database.Languages.Where(l => l.Id == languageID).FirstOrDefault();
-            if (language != default)
-            {
-                Database.Remove(language);
-                await Database.SaveChangesAsync();
-                return true;
-            }
-            return false;
+            if (language == default)
+                return false;
+
+            Database.Remove(language);
+            await Database.SaveChangesAsync();
+            return true;
         }
     }
 }

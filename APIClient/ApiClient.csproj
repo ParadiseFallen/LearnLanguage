@@ -4,6 +4,14 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>ApiClient</AssemblyName>
     <RootNamespace>ApiClient</RootNamespace>
+    <Version>0.1.0</Version>
+    <Authors>FallenParadise</Authors>
+    <Company />
+    <Product />
+    <Description>Base library for bulding rest clients in c#</Description>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,11 +3,8 @@ using System;
 using Avalonia;
 using Models;
 using ReactiveUI.Fody.Helpers;
-using DynamicData;
 using Avalonia.Collections;
 using Splat;
-using Avalonia.Media.Imaging;
-using System.IO;
 using System.Reactive.Linq;
 using Client.Services;
 using ApiServices.ServicesInterfaces;
@@ -66,12 +63,12 @@ namespace Client.ViewModels
             Languages = new AvaloniaList<Language>(languageApiResponse.Content);
 
             Exit = ReactiveCommand.Create(() => { Environment.Exit(0); });
-            Acount = ReactiveCommand.Create(() =>
+            Acount = ReactiveCommand.Create(async () =>
             {
                 var cfgSer = Locator.Current.GetService<ILocalSettingsService>();
-                cfgSer.Config.AuthToken = null;
+                cfgSer.Load().Config.AuthToken = null;
                 cfgSer.Save();
-                HostScreen.Router.NavigateAndReset.Execute(new AuthVM(HostScreen));
+                await HostScreen.Router.NavigateAndReset.Execute(new AuthVM(HostScreen));
             });
 
             Learn = ReactiveCommand.CreateFromTask(async () =>

@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace Web.API
 {
@@ -11,13 +14,16 @@ namespace Web.API
     public class AccountApi : Controller
     {
         private AccountService Service { get; }
-        public AccountApi(AccountService service)
+        private UserManager<User> UserManager { get; }
+
+        public AccountApi(AccountService service, UserManager<User> userManager)
         {
             Service = service;
+            UserManager = userManager;
         }
 
         [HttpPost("login")]
-        public async Task<ApiResponse<UserInfo>> Login([FromBody] Login data)=>
+        public async Task<ApiResponse<UserInfo>> Login([FromBody]Login data)=>
              await Service.LoginAsync(data);
 
         [HttpPost("register")]
@@ -26,6 +32,7 @@ namespace Web.API
             var errorList = await Service.RegisterAsync(data);
             if (errorList != null)
                 return Conflict(new ApiResponse<object>() {Errors= errorList.Select(x => x.Description) });
+            var x = Ok(new ApiResponse<object>() { });
             return Ok(new ApiResponse<object>() { });
         }
 
@@ -36,5 +43,11 @@ namespace Web.API
             await Service.LogoutAsync();
             return Ok();
         }
+
+        [Authorize(AuthenticationSchemes = "Identity.Application")]
+        [HttpGet]
+        public async Task<IList<string>> Info()=>
+            await UserManager.GetRolesAsync(await UserManager.GetUserAsync(HttpContext.User));
+        
     }
 }

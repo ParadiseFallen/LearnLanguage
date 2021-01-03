@@ -74,6 +74,8 @@ namespace Web
             services.AddRazorPages()
                 .AddJsonOptions(opt => opt.JsonSerializerOptions.AddAllConverters());
 
+            //services.AddControllers().ConfigureApiBehaviorOptions(x=>x.);
+
             #region register services
             services.AddSingleton<WeatherForecastService>(); //REMOVE
 
@@ -114,6 +116,7 @@ namespace Web
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
         }
     }
 }

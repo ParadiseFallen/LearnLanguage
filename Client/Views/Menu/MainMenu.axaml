@@ -55,7 +55,7 @@
 
 		<Button DockPanel.Dock="Bottom" Content="Exit app" Command="{Binding Exit}"/>
 		<Button DockPanel.Dock="Bottom" Content="Exit account" Command="{Binding Acount}"/>
-		<Button DockPanel.Dock="Bottom" Content="Learn!" Command="{Binding Learn}"/>
+		<Button DockPanel.Dock="Top" Content="Learn!" Command="{Binding Learn}" Height="100" VerticalAlignment="Top"/>
 	</DockPanel>
 
 </UserControl>

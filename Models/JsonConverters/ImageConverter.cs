@@ -13,10 +13,18 @@ namespace Models.JsonConverters
     {
         public override Image Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            using (MemoryStream mStream = new MemoryStream(reader.GetBytesFromBase64()))
+            try
             {
-                return Image.FromStream(mStream);
+                using (MemoryStream mStream = new MemoryStream(reader.GetBytesFromBase64()))
+                {
+                    return Image.FromStream(mStream);
+                }
             }
+            catch (Exception)
+            {
+                return null;
+            }
+            
         }
 
         public override void Write(Utf8JsonWriter writer, Image img, JsonSerializerOptions options)

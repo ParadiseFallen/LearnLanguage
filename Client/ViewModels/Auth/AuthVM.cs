@@ -5,22 +5,18 @@ using System.Text;
 
 namespace Client.ViewModels
 {
-    public class AuthVM : ReactiveObject, IRoutableViewModel, IScreen
+    public class AuthVM : RoutableViewModel, IScreen
     {
         #region IRoutableViewModel
-        public string UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
-        public IScreen HostScreen { get; private set; }
         public RoutingState Router { get; }
         #endregion
-#if DEBUG
-        public AuthVM()
+        //require for avalonia debug
+        public AuthVM() : base(null)
         {
         }
-#endif
-        public AuthVM(IScreen hostScreen = null)
+        public AuthVM(IScreen hostScreen = null) : base(hostScreen)
         {
             Router = new RoutingState();
-            HostScreen = hostScreen;
             Router.Navigate.Execute(new LoginVM(this));
         }
     }

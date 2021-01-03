@@ -4,7 +4,7 @@
 insert into Phrases ([Text],CultureId) values
 (N'Now or never!',3),			--1
 (N'Сейчас или никогда!',4),	--2
-(N'Everyone has one&#146;s own path.',3),			--3
+(N'Everyone has one''s own path.',3),			--3
 (N'У каждого своя дорога',4),	--4
 (N'Life is beautiful.',3),			--5
 (N'Жизнь прекрасна',4),	--6
@@ -18,7 +18,10 @@ insert into Translations(AId,BId) values
 (5,6),
 (7,8)
 
-
+--select * from Phrases
+--update Phrases
+--set [Text] = N'Everyone has one''s own path.'
+--where Id = 3
 /*
 
 update Languages
